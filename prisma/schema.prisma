@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,16 +8,61 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
-  pets      Pet[]
+  id             Int        @id @default(autoincrement())
+  name           String?    // Nome do usuário pode ser nulo
+  email          String     @unique
+  emailVerified  DateTime?  // Data de verificação do email pode ser nula
+  image          String?    // Imagem do usuário pode ser nula
+  password       String?    // Senha do usuário pode ser nula
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  accounts       Account[]
+  sessions       Session[]
+  pets           Pet[]
+}
+
+model Account {
+  id                 Int      @id @default(autoincrement())
+  userId             Int
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  // Token de atualização pode ser nulo
+  access_token       String?  // Token de acesso pode ser nulo
+  expires_at         Int?     // Data de expiração pode ser nula
+  token_type         String?  // Tipo de token pode ser nulo
+  scope              String?  // Escopo pode ser nulo
+  id_token           String?  // ID token pode ser nulo
+  session_state      String?  // Estado da sessão pode ser nulo
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String   @id
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Pet {
-  id        Int      @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())  // Alterado para Int e uso de autoincrement
   name      String
-  type      String  
-  owner     User     @relation(fields: [ownerId], references: [id])
-  ownerId   Int
+  ownerName String
+  phone     String
+  pet       String
+  race      String
+  birth     DateTime
+  userId    Int
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
