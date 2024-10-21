@@ -2,7 +2,9 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { api } from "@/lib/api";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type RegisterFormInputs = {
@@ -20,12 +22,28 @@ export default function RegisterPage() {
     formState: { errors },
   } = useForm<RegisterFormInputs>();
 
-  const onSubmit: SubmitHandler<RegisterFormInputs> = (data) => {
-    console.log(data);
-    // Aqui você pode fazer a chamada à API de registro
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
+    try {
+      const response = await api.post("/api/user/register", {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+
+      if (response.status === 200) {
+        router.push("/login");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        alert(error.response.data.error);
+      } else {
+        alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
+      }
+    }
   };
 
-  
   const password = watch("password");
 
   return (
