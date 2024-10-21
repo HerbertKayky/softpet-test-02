@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type LoginFormInputs = {
   email: string;
@@ -17,9 +19,23 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
-    console.log(data);
-    // Aqui você pode fazer a chamada à API de login
+  const router = useRouter();
+
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
+    try {
+      const response = await axios.post("/api/user/login", data);
+
+      // Aqui você pode armazenar o token no localStorage ou na sessão
+      console.log("Login bem-sucedido:", response.data.token);
+      router.push("/");
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error("Erro:", error.response.data.error);
+        // Aqui você pode exibir uma mensagem de erro para o usuário
+      } else {
+        console.error("Erro:", error);
+      }
+    }
   };
 
   return (
