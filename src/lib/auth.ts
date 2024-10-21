@@ -1,16 +1,12 @@
-import NextAuth, { NextAuthOptions, User as NextAuthUser } from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 import prismaClient from "./prisma";
 import bcrypt from "bcrypt";
-import GoogleProvider from "next-auth/providers/google";
-import { Adapter } from "next-auth/adapters";
-
-const prisma = new PrismaClient();
 
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prismaClient) as Adapter,
+  adapter: PrismaAdapter(prismaClient),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -23,12 +19,10 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        if (!credentials) {
-          throw new Error("Credenciais não fornecidas.");
-        }
+      async authorize(credentials) {
+        if (!credentials) throw new Error("Credenciais não fornecidas.");
 
-        const user = await prisma.user.findUnique({
+        const user = await prismaClient.user.findUnique({
           where: { email: credentials.email },
         });
 
@@ -38,35 +32,23 @@ export const authOptions: NextAuthOptions = {
             user.password
           );
           if (isValid) {
-            // Converte o id para string antes de retornar
-            return {
-              ...user,
-              id: user.id.toString(), // Aqui estamos convertendo o id
-            } as NextAuthUser; // Certifique-se de que o retorno é do tipo NextAuthUser
+            return { ...user, id: user.id.toString() };
           }
         }
 
-        return null; // Retorne null se as credenciais não forem válidas
+        return null;
       },
     }),
   ],
-  pages: {
-    signIn: "/auth/signin",
-  },
-  session: {
-    strategy: "jwt",
-  },
+  pages: { signIn: "/auth/signin" },
+  session: { strategy: "jwt" },
   callbacks: {
     async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id.toString(); // Convertendo para string
-      }
+      if (user) token.id = user.id.toString();
       return token;
     },
     async session({ session, token }) {
-      if (token) {
-        session.user.id = token.id; // Garantindo que token.id é string
-      }
+      session.user.id = token.id as string;
       return session;
     },
   },
