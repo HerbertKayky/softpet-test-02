@@ -1,9 +1,10 @@
 export interface PetProps {
-  id: string;
+  id: number;
   name: string;
   ownerName: string;
   phone: string;
   pet: string;
   race: string;
   birth: Date;
+  userId: number;
 }
