@@ -34,3 +34,16 @@ export async function POST(request: Request) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    const pets = await prismaClient.pet.findMany();
+    return NextResponse.json(pets);
+  } catch (err) {
+    console.error("Erro ao buscar pets: ", err);
+    return NextResponse.json(
+      { error: "Falha ao buscar pets" },
+      { status: 500 }
+    );
+  }
+}
