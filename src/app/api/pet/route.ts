@@ -35,9 +35,19 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const name = searchParams.get("name") || "";
+
   try {
-    const pets = await prismaClient.pet.findMany();
+    const pets = await prismaClient.pet.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: "insensitive",
+        },
+      },
+    });
     return NextResponse.json(pets);
   } catch (err) {
     console.error("Erro ao buscar pets: ", err);
