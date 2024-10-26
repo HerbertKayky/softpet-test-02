@@ -7,6 +7,12 @@ import { api } from "@/lib/api";
 import Container from "../container";
 
 export function Search() {
+  
+
+  
+
+
+
   return (
     <Container>
       <div className="flex w-full">
