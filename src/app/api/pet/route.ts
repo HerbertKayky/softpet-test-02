@@ -12,6 +12,10 @@ export async function POST(request: Request) {
 
   try {
     const userId = session?.user.id ? Number(session.user.id) : undefined;
+    
+    if (!userId) {
+      return NextResponse.json("User not authenticated", { status: 401 });
+    }
 
     await prismaClient.pet.create({
       data: {
