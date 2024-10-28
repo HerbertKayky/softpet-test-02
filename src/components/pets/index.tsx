@@ -125,7 +125,7 @@ export default function PetsSearch() {
             >
               <div className="rounded-full p-3 mx-2 bg-gradient-blue">
                 <img
-                  src={pet.pet === "cat" ? "/cat.svg" : "/dog.svg"}
+                  src={pet.pet === "CAT" ? "/cat.svg" : "/dog.svg"}
                   alt="ícone do animal"
                   className="w-10 h-10"
                 />

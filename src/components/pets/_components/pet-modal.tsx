@@ -4,9 +4,20 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { PetProps } from "@/utils/pet.type";
 import { api } from "@/lib/api";
 import { PetModalProps } from "@/utils/pet-modal.type";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import { IoMdCalendar, IoMdClose } from "react-icons/io";
+import { PiDna } from "react-icons/pi";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { MdOutlinePets } from "react-icons/md";
+import { FaPhoneVolume, FaRegUserCircle } from "react-icons/fa";
 
 const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
-  const { register, handleSubmit, reset } = useForm<PetProps>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<PetProps>();
 
   const handleFormSubmit: SubmitHandler<PetProps> = async (data) => {
     try {
@@ -22,63 +33,144 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded-md w-full max-w-md">
-        <h2 className="text-xl font-bold mb-4">Cadastrar Novo Pet</h2>
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-          <input
-            {...register("name")}
-            type="text"
-            placeholder="Nome do Pet"
-            className="w-full p-2 border rounded-md"
-            required
-          />
-          <input
-            {...register("ownerName")}
-            type="text"
-            placeholder="Nome do Dono"
-            className="w-full p-2 border rounded-md"
-            required
-          />
-          <input
-            {...register("phone")}
-            type="tel"
-            placeholder="Telefone"
-            className="w-full p-2 border rounded-md"
-            required
-          />
-          <input
-            {...register("pet")}
-            type="text"
-            placeholder="Tipo de Pet (ex: Cachorro)"
-            className="w-full p-2 border rounded-md"
-            required
-          />
-          <input
-            {...register("race")}
-            type="text"
-            placeholder="Raça"
-            className="w-full p-2 border rounded-md"
-            required
-          />
-          <input
-            {...register("birth")}
-            type="date"
-            className="w-full p-2 border rounded-md"
-            required
-          />
-          <div className="flex justify-end space-x-2">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-20">
+      <div className="bg-gradient-dark-blue shadow-xl w-full max-w-2xl p-20 rounded-lg border-2 border-blue-500">
+        <div className="flex items-center justify-between mb-12 text-white">
+          <div className="flex items-center gap-5">
+            <div className="rounded-full bg-gradient-blue p-4">
+              <AiOutlinePlusCircle size={40} color="#FFF" />
+            </div>
+            <h1 className="font-bold text-lg md:text-3xl">Cadastrar</h1>
+          </div>
+          <button onClick={onClose} className="text-white hover:text-gray-300">
+            <IoMdClose size={35} />
+          </button>
+        </div>
+
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={handleSubmit(handleFormSubmit)}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-1">
+                <MdOutlinePets size={20} color="#FFF" />
+                <label className="text-white">Nome</label>
+              </div>
+              <input
+                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                type="text"
+                placeholder="Nome Sobrenome"
+                {...register("name", {
+                  required: "Nome do animal é obrigatório",
+                })}
+              />
+              {errors.name && (
+                <span className="text-red-500">{errors.name.message}</span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-1">
+                <PiDna size={20} color="#FFF" />
+                <label className="text-white">Animal</label>
+              </div>
+              <div className="flex gap-2">
+                <label className="w-full h-10 flex items-center gap-2 text-white border-2 border-gray-500 rounded-lg p-1">
+                  <input type="radio" value="DOG" {...register("pet")} />
+                  Cachorro
+                </label>
+                <label className="w-full h-10 flex items-center gap-2 text-white border-2 border-gray-500 rounded-lg p-1">
+                  <input type="radio" value="CAT" {...register("pet")} />
+                  Gato
+                </label>
+              </div>
+              {errors.pet && (
+                <span className="text-red-500">{errors.pet.message}</span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-1">
+                <FaRegUserCircle size={20} color="#FFF" />
+                <label className="text-white">Dono</label>
+              </div>
+              <input
+                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                type="text"
+                placeholder="Nome Sobrenome"
+                {...register("ownerName", {
+                  required: "Nome do dono obrigatório",
+                })}
+              />
+              {errors.ownerName && (
+                <span className="text-red-500">{errors.ownerName.message}</span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-1">
+                <PiDna size={20} color="#FFF" />
+                <label className="text-white">Raça</label>
+              </div>
+              <input
+                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                type="text"
+                placeholder="Raça"
+                {...register("race", { required: "Raça obrigatória" })}
+              />
+              {errors.race && (
+                <span className="text-red-500">{errors.race.message}</span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-1">
+                <FaPhoneVolume size={20} color="#FFF" />
+                <label className="text-white">Telefone</label>
+              </div>
+              <input
+                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                type="text"
+                placeholder="(00) 0 0000-0000"
+                {...register("phone", { required: "Telefone obrigatório" })}
+              />
+              {errors.phone && (
+                <span className="text-red-500">{errors.phone.message}</span>
+              )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-1">
+                <IoMdCalendar size={20} color="#FFF" />
+                <label className="text-white">
+                  Nascimento <span className="text-gray-500">(Aproximado)</span>
+                </label>
+              </div>
+              <input
+                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                type="date"
+                {...register("birth", {
+                  required: "Data de nascimento obrigatória",
+                })}
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-center gap-4 mt-12">
             <button
-              type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-gray-500 text-white rounded-md"
+              className="flex items-center justify-center gap-1 bg-white font-bold text-blue-600 px-4 py-2 rounded-md w-full"
             >
-              Cancelar
+              <IoArrowBackCircleOutline size={26} />
+              Voltar
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded-md"
+              className="flex items-center justify-center gap-1 bg-gradient-blue text-white font-bold px-4 py-2 rounded-md w-full"
+              disabled={!isValid}
             >
+              <AiOutlinePlusCircle size={26} color="#FFF" />
               Cadastrar
             </button>
           </div>
