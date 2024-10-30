@@ -13,6 +13,7 @@ import Container from "../container";
 import { PetProps } from "@/utils/pet.type";
 import { useSession } from "next-auth/react";
 import PetModal from "./_components/pet-modal";
+import EditPetModal from "./_components/edit-pet-modal";
 
 export default function PetsSearch() {
   const { data: session } = useSession();
@@ -20,7 +21,9 @@ export default function PetsSearch() {
   const [openModal, setOpenModal] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false); // Novo estado para verificar se houve pesquisa
+  const [editPetData, setEditPetData] = useState<PetProps | null>(null);
 
   useEffect(() => {
     fetchPets();
@@ -35,6 +38,17 @@ export default function PetsSearch() {
       console.error("Erro ao buscar pets:", error);
     }
   };
+
+  const handleEditPet = (pet: PetProps) => {
+    if (session?.user) {
+      setEditPetData(pet);
+      setIsModalOpen(false);
+      setIsEditModalOpen(true);
+    } else {
+      alert("Você não pode editar esse pet");
+    }
+  };
+
 
   const handleSearch = () => {
     fetchPets(searchTerm);
@@ -113,6 +127,13 @@ export default function PetsSearch() {
         onSuccess={fetchPets}
       />
 
+      <EditPetModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSuccess={fetchPets}
+        petData={editPetData}
+      />
+
       {/* Pet List */}
       <main className="w-full mx-auto px-2">
         {pets.length > 0 ? (
@@ -173,7 +194,7 @@ export default function PetsSearch() {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <button className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2">
+                      <button onClick={() => handleEditPet(pet)} className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2">
                         <FaEdit size={20} />
                         Editar
                       </button>
