@@ -22,10 +22,19 @@ export async function PUT(
     // Verifica se o pet existe e pertence ao usuário
     const existingPet = await prismaClient.pet.findUnique({
       where: { id: Number(params.id) }, // Capture o ID da URL
+      include: { user: true }, // Inclui os dados do usuário para verificar a propriedade
     });
 
     if (!existingPet) {
       return NextResponse.json({ error: "Pet not found" }, { status: 404 });
+    }
+
+    // Verifica se o pet pertence ao usuário autenticado
+    if (existingPet.userId !== userId) {
+      return NextResponse.json(
+        { error: "You do not have permission to edit this pet" },
+        { status: 403 }
+      );
     }
 
     // Atualiza o pet
