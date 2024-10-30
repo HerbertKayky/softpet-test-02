@@ -18,9 +18,18 @@ export function Header() {
             <Image src={logoimg} alt="Logo softmakers" width={60} />
             <h1 className="text-white font-medium text-3xl">SoftPet</h1>
           </Link>
-
-          <h1 className="text-white text-xl">oii {session?.user?.email}</h1>
+        {session && (
+          <Link
+            className="font-medium text-white bg-gradient-blue p-1 rounded-md"
+            href="/dashboard"
+          >
+            Meus pets
+          </Link>
+        )}
+          
         </div>
+
+        <h1 className="text-white text-lg">{session?.user?.email}</h1>
 
         {session ? (
           <>
