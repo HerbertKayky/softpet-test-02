@@ -20,7 +20,7 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
     reset,
     formState: { errors },
   } = useForm<PetProps>({
-    defaultValues: petData || { }, // Defina valores padrão válidos
+    defaultValues: petData || {}, // Defina valores padrão válidos
   });
 
   const [formData, setFormData] = useState<PetProps | null>(petData);
@@ -33,7 +33,6 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
   }, [petData, reset]);
 
   const handleFormSubmit: SubmitHandler<PetProps> = async (data) => {
-    console.log(data);
     try {
       await api.put(`/api/pet/${data.id}`, data); // Atualiza o pet no backend
       onSuccess(); // Atualiza a lista de pets após a edição
