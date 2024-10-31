@@ -59,3 +59,49 @@ export async function PUT(
     );
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const session = await getServerSession(authOptions);
+
+  try {
+    const userId = session?.user.id ? Number(session.user.id) : undefined;
+
+    if (!userId) {
+      return NextResponse.json("User not authenticated", { status: 401 });
+    }
+
+    // Verifica se o pet existe e pertence ao usuário
+    const existingPet = await prismaClient.pet.findUnique({
+      where: { id: Number(params.id) }, // Capture o ID da URL
+      include: { user: true }, // Inclui os dados do usuário para verificar a propriedade
+    });
+
+    if (!existingPet) {
+      return NextResponse.json({ error: "Pet not found" }, { status: 404 });
+    }
+
+    // Verifica se o pet pertence ao usuário autenticado
+    if (existingPet.userId !== userId) {
+      return NextResponse.json(
+        { error: "You do not have permission to delete this pet" },
+        { status: 403 }
+      );
+    }
+
+    // Deleta o pet
+    await prismaClient.pet.delete({
+      where: { id: Number(params.id) }, // Use o ID da URL para a exclusão
+    });
+
+    return NextResponse.json({ message: "Pet deleted successfully" });
+  } catch (err) {
+    console.error("Erro no servidor", err);
+    return NextResponse.json(
+      { error: "Failed to delete pet" },
+      { status: 400 }
+    );
+  }
+}
