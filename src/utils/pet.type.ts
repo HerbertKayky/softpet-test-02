@@ -5,6 +5,6 @@ export interface PetProps {
   phone: string;
   pet: string;
   race: string;
-  birth: Date;
+  birth: string | Date;
   userId: number;
 }
