@@ -1,5 +1,3 @@
-"use client";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import { PetProps } from "@/utils/pet.type";
 import { api } from "@/lib/api";
@@ -23,12 +21,13 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
     register,
     handleSubmit,
     reset,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<PetProps>({
     defaultValues: petData || {},
   });
   const { data: session } = useSession();
   const [errorModalOpen, setErrorModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (petData) {
@@ -45,6 +44,7 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
   }, [petData, reset]);
 
   const handleFormSubmit: SubmitHandler<PetProps> = async (data) => {
+    setIsSubmitting(true);
     if (petData && petData.userId !== Number(session?.user.id)) {
       setErrorModalOpen(true);
       return;
@@ -57,6 +57,8 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
       onClose();
     } catch (error) {
       console.error("Erro ao editar pet:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -189,9 +191,12 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
             </button>
             <button
               type="submit"
-              className="flex items-center justify-center gap-1 bg-gradient-blue text-white font-bold px-4 py-2 rounded-md w-full"
+              disabled={!isValid || isSubmitting}
+              className={`flex items-center justify-center gap-1 bg-gradient-blue text-white font-bold px-4 py-2 rounded-md w-full ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              Salvar
+              {isSubmitting ? "Salvando..." : "Salvar"}
             </button>
           </div>
         </form>
