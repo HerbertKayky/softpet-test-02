@@ -9,6 +9,7 @@ import { IoIosArrowDown, IoIosArrowUp, IoMdCalendar } from "react-icons/io";
 import { PiDna } from "react-icons/pi";
 import { FaEdit, FaPhoneVolume, FaRegTrashAlt } from "react-icons/fa";
 import DeletePetModal from "@/components/pets/_components/delete-pet-modal";
+import EditPetModal from "@/components/pets/_components/edit-pet-modal";
 
 export default function UserPetsDashboard() {
   const { data: session } = useSession();
@@ -17,6 +18,8 @@ export default function UserPetsDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [deletePetData, setDeletePetData] = useState<PetProps | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [editPetData, setEditPetData] = useState<PetProps | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   useEffect(() => {
     if (session) {
@@ -62,6 +65,11 @@ export default function UserPetsDashboard() {
   const handleDeletePet = (pet: PetProps) => {
     setDeletePetData(pet);
     setIsDeleteModalOpen(true);
+  };
+
+  const handleEditPet = (pet: PetProps) => {
+    setEditPetData(pet);
+    setIsEditModalOpen(true);
   };
 
   return (
@@ -128,7 +136,10 @@ export default function UserPetsDashboard() {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <button className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => handleEditPet(pet)}
+                      className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2"
+                    >
                       <FaEdit size={20} />
                       Editar
                     </button>
@@ -153,6 +164,12 @@ export default function UserPetsDashboard() {
         onClose={() => setIsDeleteModalOpen(false)}
         onSuccess={fetchUserPets}
         petData={deletePetData}
+      />
+      <EditPetModal
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+        onSuccess={fetchUserPets}
+        petData={editPetData}
       />
     </main>
   );
