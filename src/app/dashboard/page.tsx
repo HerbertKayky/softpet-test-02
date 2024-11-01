@@ -8,12 +8,15 @@ import { MdOutlinePets } from "react-icons/md";
 import { IoIosArrowDown, IoIosArrowUp, IoMdCalendar } from "react-icons/io";
 import { PiDna } from "react-icons/pi";
 import { FaEdit, FaPhoneVolume, FaRegTrashAlt } from "react-icons/fa";
+import DeletePetModal from "@/components/pets/_components/delete-pet-modal";
 
 export default function UserPetsDashboard() {
   const { data: session } = useSession();
   const [pets, setPets] = useState<PetProps[]>([]);
   const [openModal, setOpenModal] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [deletePetData, setDeletePetData] = useState<PetProps | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     if (session) {
@@ -55,6 +58,11 @@ export default function UserPetsDashboard() {
 
     return age;
   }
+
+  const handleDeletePet = (pet: PetProps) => {
+    setDeletePetData(pet);
+    setIsDeleteModalOpen(true);
+  };
 
   return (
     <main className="w-full mx-auto px-2">
@@ -124,7 +132,10 @@ export default function UserPetsDashboard() {
                       <FaEdit size={20} />
                       Editar
                     </button>
-                    <button className="bg-gradient-blue px-4 py-2 rounded-md text-white font-bold flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => handleDeletePet(pet)}
+                      className="bg-gradient-blue px-4 py-2 rounded-md text-white font-bold flex items-center justify-center gap-2"
+                    >
                       <FaRegTrashAlt size={20} />
                       Remover
                     </button>
@@ -137,6 +148,12 @@ export default function UserPetsDashboard() {
       ) : (
         <p className="text-center text-gray-500">Nenhum pet encontrado.</p>
       )}
+      <DeletePetModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onSuccess={fetchUserPets}
+        petData={deletePetData}
+      />
     </main>
   );
 }
