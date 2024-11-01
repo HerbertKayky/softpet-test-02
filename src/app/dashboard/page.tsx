@@ -12,10 +12,8 @@ import { FaEdit, FaPhoneVolume, FaRegTrashAlt } from "react-icons/fa";
 export default function UserPetsDashboard() {
   const { data: session } = useSession();
   const [pets, setPets] = useState<PetProps[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [openModal, setOpenModal] = useState<number | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchPerformed, setSearchPerformed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (session) {
@@ -25,15 +23,16 @@ export default function UserPetsDashboard() {
 
   const fetchUserPets = async (name: string = "") => {
     if (!session) return;
-
+    setIsLoading(true);
     try {
       const response = await api.get("/api/pet/user", {
         params: { name },
       });
       setPets(response.data);
-      setSearchPerformed(true);
     } catch (error) {
       console.error("Erro ao buscar pets do usuário:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -59,7 +58,11 @@ export default function UserPetsDashboard() {
 
   return (
     <main className="w-full mx-auto px-2">
-      {pets.length > 0 ? (
+      {isLoading ? (
+        <p className="text-center text-gray-500">
+          Carregando, por favor aguarde...
+        </p>
+      ) : pets.length > 0 ? (
         <ul className="flex flex-wrap gap-4 justify-center">
           {pets.map((pet) => (
             <li
