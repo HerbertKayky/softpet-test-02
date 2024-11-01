@@ -1,5 +1,3 @@
-"use client";
-
 import { PetProps } from "@/utils/pet.type";
 import { api } from "@/lib/api";
 import { PetModalProps } from "@/utils/pet-modal.type";
@@ -10,12 +8,9 @@ import { FaPhoneVolume, FaRegUserCircle } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
 
-const DeletePetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
-  isOpen,
-  onClose,
-  onSuccess,
-  petData,
-}) => {
+const DeletePetModal: React.FC<
+  PetModalProps & { petData: PetProps | null }
+> = ({ isOpen, onClose, onSuccess, petData }) => {
   const [isRemoving, setIsRemoving] = useState(false);
 
   const handleRemovePet = async () => {
@@ -57,42 +52,67 @@ const DeletePetModal: React.FC<PetModalProps & { petData: PetProps | null }> = (
                 <label className="text-white flex items-center gap-1">
                   <MdOutlinePets size={20} color="#FFF" /> Nome
                 </label>
-                <p className="text-gray-300">{petData.name}</p>
+                <input
+                  readOnly
+                  value={petData.name}
+                  className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-300"
+                />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-white flex items-center gap-1">
                   <PiDna size={20} color="#FFF" /> Animal
                 </label>
-                <p className="text-gray-300">{petData.pet === "DOG" ? "Cachorro" : "Gato"}</p>
+                <input
+                  readOnly
+                  value={petData.pet === "DOG" ? "Cachorro" : "Gato"}
+                  className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-300"
+                />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-white flex items-center gap-1">
                   <FaRegUserCircle size={20} color="#FFF" /> Dono
                 </label>
-                <p className="text-gray-300">{petData.ownerName}</p>
+                <input
+                  readOnly
+                  value={petData.ownerName}
+                  className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-300"
+                />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-white flex items-center gap-1">
                   <PiDna size={20} color="#FFF" /> Raça
                 </label>
-                <p className="text-gray-300">{petData.race}</p>
+                <input
+                  readOnly
+                  value={petData.race}
+                  className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-300"
+                />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-white flex items-center gap-1">
                   <FaPhoneVolume size={20} color="#FFF" /> Telefone
                 </label>
-                <p className="text-gray-300">{petData.phone}</p>
+                <input
+                  readOnly
+                  value={petData.phone}
+                  className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-300"
+                />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-white flex items-center gap-1">
-                  <IoMdCalendar size={20} color="#FFF" /> Nascimento (Aproximado)
+                  <IoMdCalendar size={20} color="#FFF" /> Nascimento
+                  (Aproximado)
                 </label>
-                <p className="text-gray-300">{new Date(petData.birth).toLocaleDateString()}</p>
+                <input
+                  readOnly
+                  value={new Date(petData.birth).toLocaleDateString()}
+                  className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-300"
+                />
               </div>
             </div>
 
@@ -106,7 +126,9 @@ const DeletePetModal: React.FC<PetModalProps & { petData: PetProps | null }> = (
               <button
                 onClick={handleRemovePet}
                 disabled={isRemoving}
-                className={`flex items-center justify-center gap-1 bg-red-600 text-white font-bold px-4 py-2 rounded-md w-full ${isRemoving ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`flex items-center justify-center gap-1 bg-red-600 text-white font-bold px-4 py-2 rounded-md w-full ${
+                  isRemoving ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 {isRemoving ? "Removendo..." : "Remover Pet"}
               </button>
