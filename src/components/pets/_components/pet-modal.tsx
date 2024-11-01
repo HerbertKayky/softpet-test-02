@@ -1,5 +1,3 @@
-"use client";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import { PetProps } from "@/utils/pet.type";
 import { api } from "@/lib/api";
@@ -10,6 +8,7 @@ import { PiDna } from "react-icons/pi";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { MdOutlinePets } from "react-icons/md";
 import { FaPhoneVolume, FaRegUserCircle } from "react-icons/fa";
+import { useState } from "react";
 
 const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
   const {
@@ -18,8 +17,10 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
     reset,
     formState: { errors, isValid },
   } = useForm<PetProps>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFormSubmit: SubmitHandler<PetProps> = async (data) => {
+    setIsSubmitting(true);
     try {
       await api.post("/api/pet", data);
       onSuccess(); // Atualiza a lista de pets após o cadastro
@@ -27,6 +28,8 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
       onClose();
     } catch (error) {
       console.error("Erro ao cadastrar pet:", error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -167,11 +170,12 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
             </button>
             <button
               type="submit"
-              className="flex items-center justify-center gap-1 bg-gradient-blue text-white font-bold px-4 py-2 rounded-md w-full"
-              disabled={!isValid}
+              disabled={!isValid || isSubmitting}
+              className={`flex items-center justify-center gap-1 bg-gradient-blue text-white font-bold px-4 py-2 rounded-md w-full ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              <AiOutlinePlusCircle size={26} color="#FFF" />
-              Cadastrar
+              {isSubmitting ? "Cadastrando..." : "Cadastrar"}
             </button>
           </div>
         </form>
