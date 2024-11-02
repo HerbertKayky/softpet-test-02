@@ -23,7 +23,7 @@ export default function PetsSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [searchPerformed, setSearchPerformed] = useState(false); // Novo estado para verificar se houve pesquisa
+  const [searchPerformed, setSearchPerformed] = useState(false);
   const [editPetData, setEditPetData] = useState<PetProps | null>(null);
   const [deletePetData, setDeletePetData] = useState<PetProps | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -36,14 +36,14 @@ export default function PetsSearch() {
     try {
       const response = await api.get("/api/pet", { params: { name } });
       setPets(response.data);
-      setSearchPerformed(true); // Marcar como pesquisa realizada
+      setSearchPerformed(true);
     } catch (error) {
       console.error("Erro ao buscar pets:", error);
     }
   };
 
   const handleEditPet = (pet: PetProps) => {
-    if (session?.user) {
+    if (Number(session?.user?.id) === pet.userId) {
       setEditPetData(pet);
       setIsModalOpen(false);
       setIsEditModalOpen(true);
@@ -53,8 +53,12 @@ export default function PetsSearch() {
   };
 
   const handleDeletePet = (pet: PetProps) => {
-    setDeletePetData(pet);
-    setIsDeleteModalOpen(true);
+    if (Number(session?.user?.id) === pet.userId) {
+      setDeletePetData(pet);
+      setIsDeleteModalOpen(true);
+    } else {
+      alert("Você não pode remover esse pet");
+    }
   };
 
   const handleSearch = () => {
@@ -207,33 +211,37 @@ export default function PetsSearch() {
                       </p>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                      <button
-                        onClick={() => handleEditPet(pet)}
-                        className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2"
-                      >
-                        <FaEdit size={20} />
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => handleDeletePet(pet)}
-                        className="bg-gradient-blue px-4 py-2 rounded-md text-white font-bold flex items-center justify-center gap-2"
-                      >
-                        <FaRegTrashAlt size={20} />
-                        Remover
-                      </button>
-                    </div>
+                    {Number(session?.user?.id) === pet.userId && (
+                      <div className="flex flex-col gap-2">
+                        <button
+                          onClick={() => handleEditPet(pet)}
+                          className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2"
+                        >
+                          <FaEdit size={20} />
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDeletePet(pet)}
+                          className="bg-gradient-blue px-4 py-2 rounded-md text-white font-bold flex items-center justify-center gap-2"
+                        >
+                          <FaRegTrashAlt size={20} />
+                          Remover
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </li>
             ))}
           </ul>
+        ) : searchPerformed ? (
+          <p className="text-white font-semibold text-center">
+            Nenhum pet encontrado
+          </p>
         ) : (
-          searchPerformed && (
-            <p className="text-center text-white text-lg">
-              Esse pet não está cadastrado
-            </p>
-          )
+          <p className="text-white font-semibold text-center">
+            Buscando pets...
+          </p>
         )}
       </main>
     </Container>
