@@ -100,6 +100,11 @@ export default function UserPetsDashboard() {
                   <div className="flex items-center gap-2">
                     <MdOutlinePets size={22} color="#FFF" />
                     <p className="text-white text-lg">{pet.name}</p>
+                    {Number(session?.user.id) === pet.userId && (
+                      <p className="text-white bg-gradient-blue px-1 rounded-sm">
+                        Seu pet
+                      </p>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-2">
