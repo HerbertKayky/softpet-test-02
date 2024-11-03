@@ -177,7 +177,7 @@ export default function PetsSearch() {
                       <MdOutlinePets size={22} color="#FFF" />
                       <p className="text-white text-lg">{pet.name}</p>
                       {Number(session?.user.id) === pet.userId && (
-                        <p className="text-white bg-gradient-blue px-1 rounded-sm">
+                        <p className="text-white bg-gradient-blue px-1 rounded-sm whitespace-nowrap">
                           Seu pet
                         </p>
                       )}
