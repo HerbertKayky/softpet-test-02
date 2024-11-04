@@ -94,35 +94,33 @@ export default function UserPetsDashboard() {
   return (
     <Container>
       <main className="w-full mx-auto">
-        <div className="flex w-full mb-6">
-          <div className="flex w-full border-2 rounded-md border-gray-700 h-13 items-center justify-between">
-            <div className="flex items-center gap-2 flex-grow">
-              <div className="bg-gray-700 p-3">
-                <CiSearch size={28} />
-              </div>
-              <input
-                className="w-full outline-none bg-transparent text-white font-medium text-lg py-2"
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyPress={handleKeyPress}
-              />
-            </div>
-            <button
-              className="bg-gray-700 py-2 px-3 font-medium text-white rounded-md mr-2"
-              onClick={handleSearch}
-            >
-              Pesquisar
-            </button>
+      <div className="flex flex-wrap w-full mb-4 gap-2">
+        <div className="flex flex-grow items-center border-2 rounded-md border-gray-700 h-12 sm:h-13">
+          <div className="bg-gray-700 p-3">
+            <CiSearch size={24} />
           </div>
+          <input
+            className="w-full outline-none bg-transparent text-white font-medium text-base sm:text-lg py-2 px-2"
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyPress={handleKeyPress}
+          />
           <button
-            className="flex items-center gap-1 px-3 py-2 bg-gradient-blue text-white rounded-md font-bold ml-4"
-            onClick={handleOpenModal}
+            className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
+            onClick={handleSearch}
           >
-            <AiOutlinePlusCircle size={28} color="#FFF" />
-            Cadastrar
+            Pesquisar
           </button>
         </div>
+        <button
+          className="flex items-center gap-1 px-3 py-2 bg-gradient-blue text-white rounded-md font-bold"
+          onClick={handleOpenModal}
+        >
+          <AiOutlinePlusCircle size={24} />
+          <span className="hidden sm:inline">Cadastrar</span>
+        </button>
+      </div>
 
         {isLoading ? (
           <p className="text-center text-white font-semibold">

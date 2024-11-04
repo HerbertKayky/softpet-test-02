@@ -104,7 +104,7 @@ export default function PetsSearch() {
       {/* Search e Botão de cadastro */}
       <div className="flex flex-wrap w-full mb-4 gap-2">
         <div className="flex flex-grow items-center border-2 rounded-md border-gray-700 h-12 sm:h-13">
-          <div className="bg-gray-700 p-2 sm:p-3">
+          <div className="bg-gray-700 p-3">
             <CiSearch size={24} />
           </div>
           <input
