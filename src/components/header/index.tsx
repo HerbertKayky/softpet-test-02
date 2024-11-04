@@ -12,39 +12,46 @@ export function Header() {
 
   return (
     <Container>
-      <header className="flex items-center py-10 justify-between">
-        <div className="flex items-center gap-2">
-          <Link href="/" className="flex gap-2 items-center">
-            <Image src={logoimg} alt="Logo softmakers" width={60} />
-            <h1 className="text-white font-medium text-3xl">SoftPet</h1>
+      <header className="flex flex-wrap items-center py-5 justify-between sm:py-10">
+        <div className="flex items-center gap-2 flex-wrap">
+          <Link href="/" className="flex items-center gap-2">
+            <Image src={logoimg} alt="Logo softmakers" width={50} height={50} />
+            <h1 className="text-white font-medium text-2xl sm:text-3xl">
+              SoftPet
+            </h1>
           </Link>
-        {session && (
-          <Link
-            className="font-medium text-white bg-gradient-blue p-1 rounded-md"
-            href="/dashboard"
-          >
-            Meus pets
-          </Link>
-        )}
-          
+          {session && (
+            <Link
+              className="text-sm sm:text-base font-medium text-white bg-gradient-blue px-2 py-1 rounded-md"
+              href="/dashboard"
+            >
+              Meus pets
+            </Link>
+          )}
         </div>
 
-        <h1 className="text-white text-lg">{session?.user?.email}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-white text-sm sm:text-lg">
+            {session?.user?.email}
+          </h1>
 
-        {session ? (
-          <>
-            <h1 className="text-xl text-white">Olá {session?.user?.name}</h1>
-            <button onClick={() => signOut()} className="">
-              <FiLogOut size={27} color="#FFF" />
-            </button>
-          </>
-        ) : (
-          <Link href="/login">
-            <button className="">
-              <FaRegUser size={27} color="#FFF" />
-            </button>
-          </Link>
-        )}
+          {session ? (
+            <div className="flex items-center gap-2">
+              <h1 className="text-sm sm:text-xl text-white">
+                Olá {session?.user?.name}
+              </h1>
+              <button onClick={() => signOut()} className="">
+                <FiLogOut size={24} color="#FFF" />
+              </button>
+            </div>
+          ) : (
+            <Link href="/login">
+              <button className="">
+                <FaRegUser size={24} color="#FFF" />
+              </button>
+            </Link>
+          )}
+        </div>
       </header>
     </Container>
   );
