@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlineAudio, AiOutlinePlusCircle } from "react-icons/ai";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlinePets } from "react-icons/md";
 import { FaEdit, FaPhoneVolume, FaRegTrashAlt } from "react-icons/fa";
@@ -99,6 +99,31 @@ export default function PetsSearch() {
     }
   };
 
+  const handleVoiceSearch = () => {
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Seu navegador não suporta reconhecimento de voz");
+      return;
+    }
+
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = "pt-BR";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let transcript = event.results[0][0].transcript;
+      transcript = transcript.replace(/\.$/, "");
+      setSearchTerm(transcript);
+      fetchPets(transcript);
+    };
+
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      console.error("Erro no reconhecimento de voz:", event.error);
+    };
+  };
+
   return (
     <Container>
       {/* Search e Botão de cadastro */}
@@ -119,6 +144,12 @@ export default function PetsSearch() {
             onClick={handleSearch}
           >
             Pesquisar
+          </button>
+          <button
+            className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
+            onClick={handleVoiceSearch}
+          >
+            <AiOutlineAudio size={24} />
           </button>
         </div>
         <button
