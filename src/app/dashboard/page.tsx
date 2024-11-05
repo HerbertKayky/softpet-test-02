@@ -11,7 +11,7 @@ import { FaEdit, FaPhoneVolume, FaRegTrashAlt } from "react-icons/fa";
 import DeletePetModal from "@/components/pets/_components/delete-pet-modal";
 import EditPetModal from "@/components/pets/_components/edit-pet-modal";
 import { CiSearch } from "react-icons/ci";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlineAudio, AiOutlinePlusCircle } from "react-icons/ai";
 import Container from "@/components/container";
 import PetModal from "@/components/pets/_components/pet-modal";
 
@@ -91,36 +91,67 @@ export default function UserPetsDashboard() {
     setIsModalOpen(true);
   };
 
+  const handleVoiceSearch = () => {
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Seu navegador não suporta reconhecimento de voz");
+      return;
+    }
+
+    const recognition = new window.webkitSpeechRecognition();
+    recognition.lang = "pt-BR";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.start();
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let transcript = event.results[0][0].transcript;
+      transcript = transcript.replace(/\.$/, "");
+      setSearchTerm(transcript);
+      fetchUserPets(transcript);
+    };
+
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+      console.error("Erro no reconhecimento de voz:", event.error);
+    };
+  };
+
   return (
     <Container>
       <main className="w-full mx-auto">
-      <div className="flex flex-wrap w-full mb-4 gap-2">
-        <div className="flex flex-grow items-center border-2 rounded-md border-gray-700 h-12 sm:h-13">
-          <div className="bg-gray-700 p-3">
-            <CiSearch size={24} />
+        <div className="flex flex-wrap w-full mb-4 gap-2">
+          <div className="flex flex-grow items-center border-2 rounded-md border-gray-700 h-12 sm:h-13">
+            <div className="bg-gray-700 p-3">
+              <CiSearch size={24} />
+            </div>
+            <input
+              className="w-full outline-none bg-transparent text-white font-medium text-base sm:text-lg py-2 px-2"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button
+              className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
+              onClick={handleSearch}
+            >
+              Pesquisar
+            </button>
+            <button
+              className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
+              onClick={handleVoiceSearch}
+            >
+              <AiOutlineAudio size={24} />
+            </button>
           </div>
-          <input
-            className="w-full outline-none bg-transparent text-white font-medium text-base sm:text-lg py-2 px-2"
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
           <button
-            className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
-            onClick={handleSearch}
+            className="flex items-center gap-1 px-3 py-2 bg-gradient-blue text-white rounded-md font-bold"
+            onClick={handleOpenModal}
           >
-            Pesquisar
+            <AiOutlinePlusCircle size={24} />
+            <span className="hidden sm:inline">Cadastrar</span>
           </button>
         </div>
-        <button
-          className="flex items-center gap-1 px-3 py-2 bg-gradient-blue text-white rounded-md font-bold"
-          onClick={handleOpenModal}
-        >
-          <AiOutlinePlusCircle size={24} />
-          <span className="hidden sm:inline">Cadastrar</span>
-        </button>
-      </div>
 
         {isLoading ? (
           <p className="text-center text-white font-semibold">
