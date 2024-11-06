@@ -14,6 +14,7 @@ import { CiSearch } from "react-icons/ci";
 import { AiOutlineAudio, AiOutlinePlusCircle } from "react-icons/ai";
 import Container from "@/components/container";
 import PetModal from "@/components/pets/_components/pet-modal";
+import { redirect } from "next/navigation";
 
 export default function UserPetsDashboard() {
   const { data: session } = useSession();
@@ -27,6 +28,10 @@ export default function UserPetsDashboard() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editPetData, setEditPetData] = useState<PetProps | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  if (!session) {
+    redirect("/");
+  }
 
   useEffect(() => {
     if (session) {
