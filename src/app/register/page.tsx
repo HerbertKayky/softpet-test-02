@@ -138,7 +138,7 @@ export default function RegisterPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded"
+            className="w-full bg-gradient-blue hover:bg-blue-600 text-white font-semibold py-2 rounded"
           >
             Cadastrar
           </button>

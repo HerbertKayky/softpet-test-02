@@ -80,7 +80,7 @@ export default function LoginPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:bg-blue-600 text-white rounded-md py-2"
+            className="w-full bg-gradient-blue hover:bg-blue-600 text-white rounded-md py-2"
           >
             Entrar
           </button>
