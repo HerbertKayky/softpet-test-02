@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
-import axios from "axios";
+import { api } from "@/lib/api";
 
 type RegisterFormInputs = {
   name: string;
@@ -25,7 +25,7 @@ export default function RegisterPage() {
 
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     try {
-      const response = await axios.post("/api/user/register", {
+      const response = await api.post("/api/user/register", {
         name: data.name,
         email: data.email,
         password: data.password,
