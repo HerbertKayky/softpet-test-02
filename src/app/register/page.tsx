@@ -1,11 +1,9 @@
-// app/register/page.tsx
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { api } from "@/lib/api";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import axios from "axios";
 
 type RegisterFormInputs = {
   name: string;
@@ -23,10 +21,11 @@ export default function RegisterPage() {
   } = useForm<RegisterFormInputs>();
 
   const router = useRouter();
+  const password = watch("password");
 
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     try {
-      const response = await api.post("/api/user/register", {
+      const response = await axios.post("/api/user/register", {
         name: data.name,
         email: data.email,
         password: data.password,
@@ -44,8 +43,6 @@ export default function RegisterPage() {
     }
   };
 
-  const password = watch("password");
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
@@ -58,11 +55,11 @@ export default function RegisterPage() {
             >
               Nome
             </label>
-            <Input
+            <input
               type="text"
               id="name"
               {...register("name", { required: "O nome é obrigatório" })}
-              className="mt-1 block w-full"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
               placeholder="Seu nome"
             />
             {errors.name && (
@@ -76,11 +73,11 @@ export default function RegisterPage() {
             >
               Email
             </label>
-            <Input
+            <input
               type="email"
               id="email"
               {...register("email", { required: "O email é obrigatório" })}
-              className="mt-1 block w-full"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
               placeholder="Seu email"
             />
             {errors.email && (
@@ -96,7 +93,7 @@ export default function RegisterPage() {
             >
               Senha
             </label>
-            <Input
+            <input
               type="password"
               id="password"
               {...register("password", {
@@ -106,7 +103,7 @@ export default function RegisterPage() {
                   message: "A senha deve ter pelo menos 6 caracteres",
                 },
               })}
-              className="mt-1 block w-full"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
               placeholder="Sua senha"
             />
             {errors.password && (
@@ -122,7 +119,7 @@ export default function RegisterPage() {
             >
               Confirmar Senha
             </label>
-            <Input
+            <input
               type="password"
               id="confirmPassword"
               {...register("confirmPassword", {
@@ -130,7 +127,7 @@ export default function RegisterPage() {
                 validate: (value) =>
                   value === password || "As senhas não coincidem",
               })}
-              className="mt-1 block w-full"
+              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
               placeholder="Confirme sua senha"
             />
             {errors.confirmPassword && (
@@ -139,12 +136,12 @@ export default function RegisterPage() {
               </p>
             )}
           </div>
-          <Button
+          <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded"
           >
             Cadastrar
-          </Button>
+          </button>
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">

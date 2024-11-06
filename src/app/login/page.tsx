@@ -1,6 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -30,7 +29,6 @@ export default function LoginPage() {
       console.error("Erro ao fazer login:", result.error);
     } else {
       console.log("Login bem-sucedido");
-
       router.push("/");
     }
   };
@@ -47,11 +45,11 @@ export default function LoginPage() {
             >
               Email
             </label>
-            <Input
+            <input
               type="email"
               id="email"
               {...register("email", { required: "O email é obrigatório" })}
-              className="mt-1 block w-full"
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:border-blue-500 focus:outline-none"
               placeholder="Seu email"
             />
             {errors.email && (
@@ -67,11 +65,11 @@ export default function LoginPage() {
             >
               Senha
             </label>
-            <Input
+            <input
               type="password"
               id="password"
               {...register("password", { required: "A senha é obrigatória" })}
-              className="mt-1 block w-full"
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:border-blue-500 focus:outline-none"
               placeholder="Sua senha"
             />
             {errors.password && (
@@ -80,12 +78,12 @@ export default function LoginPage() {
               </p>
             )}
           </div>
-          <Button
+          <button
             type="submit"
-            className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-md py-2"
           >
             Entrar
-          </Button>
+          </button>
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">
@@ -95,9 +93,14 @@ export default function LoginPage() {
             </Link>
           </p>
         </div>
-        <div>
-          <p>Ou logue pelo</p>
-          <button onClick={() => signIn("google")}>Google</button>
+        <div className="mt-4 text-center">
+          <p className="text-sm text-gray-600">Ou logue pelo:</p>
+          <button
+            onClick={() => signIn("google")}
+            className="mt-2 text-blue-500 hover:underline"
+          >
+            Google
+          </button>
         </div>
       </div>
     </div>
