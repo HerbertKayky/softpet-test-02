@@ -52,6 +52,17 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  cookies: {
+    sessionToken: {
+      name: "next-auth.session-token",
+      options: {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 30 * 24 * 60 * 60,
+      },
+    },
+  },
 };
 
 export default NextAuth(authOptions);

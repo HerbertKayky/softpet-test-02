@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 type LoginFormInputs = {
   email: string;
@@ -11,11 +12,16 @@ type LoginFormInputs = {
 };
 
 export default function LoginPage() {
+  const { data: session } = useSession();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>();
+
+  if (session) {
+    redirect("/");
+  }
 
   const router = useRouter();
 

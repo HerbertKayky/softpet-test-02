@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { api } from "@/lib/api";
+import { useSession } from "next-auth/react";
 
 type RegisterFormInputs = {
   name: string;
@@ -20,8 +21,13 @@ export default function RegisterPage() {
     formState: { errors },
   } = useForm<RegisterFormInputs>();
 
+  const { data: session } = useSession();
   const router = useRouter();
   const password = watch("password");
+
+  if (session) {
+    redirect("/");
+  }
 
   const onSubmit: SubmitHandler<RegisterFormInputs> = async (data) => {
     try {
