@@ -66,12 +66,13 @@ export default function UserPetsDashboard() {
     setOpenModal(openModal === id ? null : id);
   };
 
-  function calculateAge(birthDate: Date): number {
+  function calculateAge(birthDate: Date): string {
     const today = new Date();
     const birth = new Date(birthDate);
     let age = today.getFullYear() - birth.getFullYear();
     const monthDifference = today.getMonth() - birth.getMonth();
 
+    // Ajusta a idade se o mês atual for anterior ao mês de nascimento
     if (
       monthDifference < 0 ||
       (monthDifference === 0 && today.getDate() < birth.getDate())
@@ -79,7 +80,14 @@ export default function UserPetsDashboard() {
       age--;
     }
 
-    return age;
+    if (age < 1) {
+      const months =
+        monthDifference >= 0 ? monthDifference : 12 + monthDifference; // Considera meses negativos
+
+      return `${months} ${months === 1 ? "mês" : "meses"}`;
+    }
+
+    return `${age} ${age === 1 ? "ano" : "anos"}`;
   }
 
   const handleDeletePet = (pet: PetProps) => {
@@ -219,7 +227,7 @@ export default function UserPetsDashboard() {
                     <div className="flex items-center gap-1 mb-4">
                       <IoMdCalendar size={20} color="#FFF" />
                       <p className="text-white">
-                        Idade: {calculateAge(new Date(pet.birth))} Anos (
+                        Idade: {calculateAge(new Date(pet.birth))} (
                         {new Date(pet.birth).toLocaleDateString("pt-BR")})
                       </p>
                     </div>
