@@ -127,7 +127,8 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
               <input
                 className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
                 type="text"
-                placeholder="Nome do Dono"
+                value={session?.user?.name || ""}
+                readOnly
                 {...register("ownerName", {
                   required: "Nome do dono é obrigatório",
                 })}

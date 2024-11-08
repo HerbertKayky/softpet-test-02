@@ -9,8 +9,10 @@ import { IoArrowBackCircleOutline } from "react-icons/io5";
 import { MdOutlinePets } from "react-icons/md";
 import { FaPhoneVolume, FaRegUserCircle } from "react-icons/fa";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
 
 const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
+  const { data: session } = useSession();
   const {
     register,
     handleSubmit,
@@ -104,7 +106,8 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
               <input
                 className="w-full h-10 px-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
                 type="text"
-                placeholder="Nome Sobrenome"
+                value={session?.user?.name || ""}
+                readOnly
                 {...register("ownerName", {
                   required: "Nome do dono obrigatório",
                 })}
