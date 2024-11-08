@@ -5,7 +5,7 @@ import { PetModalProps } from "@/utils/pet-modal.type";
 import { IoMdCalendar } from "react-icons/io";
 import { PiDna } from "react-icons/pi";
 import { MdOutlinePets } from "react-icons/md";
-import { FaPhoneVolume, FaRegUserCircle } from "react-icons/fa";
+import { FaEdit, FaPhoneVolume, FaRegUserCircle } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
@@ -65,14 +65,14 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-20">
-      <div className="bg-gradient-dark-blue shadow-xl w-full max-w-2xl p-20 rounded-lg border-2 border-blue-500">
-        <div className="flex items-center justify-between mb-12 text-white">
-          <div className="flex items-center gap-5">
-            <div className="rounded-full bg-gradient-blue p-4">
-              <MdOutlinePets size={40} color="#FFF" />
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-20 p-4">
+      <div className="bg-gradient-dark-blue shadow-xl w-full max-w-xl p-6 sm:p-10 rounded-lg border-2 border-blue-500">
+        <div className="flex items-center justify-between mb-8 text-white">
+          <div className="flex items-center gap-4">
+            <div className="rounded-full bg-gradient-blue p-3">
+              <FaEdit size={35} color="#FFF" />
             </div>
-            <h1 className="font-bold text-lg md:text-3xl">Editar Pet</h1>
+            <h1 className="font-bold text-xl sm:text-2xl">Editar Pet</h1>
           </div>
           <button onClick={onClose} className="text-white hover:text-gray-300">
             <IoMdClose size={35} />

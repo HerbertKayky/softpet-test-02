@@ -36,17 +36,17 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-20">
-      <div className="bg-gradient-dark-blue shadow-xl w-full max-w-2xl p-20 rounded-lg border-2 border-blue-500">
-        <div className="flex items-center justify-between mb-12 text-white">
-          <div className="flex items-center gap-5">
-            <div className="rounded-full bg-gradient-blue p-4">
-              <AiOutlinePlusCircle size={40} color="#FFF" />
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-20 p-4">
+      <div className="bg-gradient-dark-blue shadow-xl w-full max-w-xl p-6 sm:p-10 rounded-lg border-2 border-blue-500">
+        <div className="flex items-center justify-between mb-8 text-white">
+          <div className="flex items-center gap-4">
+            <div className="rounded-full bg-gradient-blue p-3">
+              <AiOutlinePlusCircle size={35} color="#FFF" />
             </div>
-            <h1 className="font-bold text-lg md:text-3xl">Cadastrar</h1>
+            <h1 className="font-bold text-xl sm:text-2xl">Cadastrar</h1>
           </div>
           <button onClick={onClose} className="text-white hover:text-gray-300">
-            <IoMdClose size={35} />
+            <IoMdClose size={30} />
           </button>
         </div>
 
@@ -54,14 +54,15 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
           className="flex flex-col gap-4"
           onSubmit={handleSubmit(handleFormSubmit)}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Nome */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1">
                 <MdOutlinePets size={20} color="#FFF" />
                 <label className="text-white">Nome</label>
               </div>
               <input
-                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                className="w-full h-10 px-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
                 type="text"
                 placeholder="Nome Sobrenome"
                 {...register("name", {
@@ -73,6 +74,7 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
               )}
             </div>
 
+            {/* Animal */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1">
                 <PiDna size={20} color="#FFF" />
@@ -93,13 +95,14 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
               )}
             </div>
 
+            {/* Dono */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1">
                 <FaRegUserCircle size={20} color="#FFF" />
                 <label className="text-white">Dono</label>
               </div>
               <input
-                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                className="w-full h-10 px-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
                 type="text"
                 placeholder="Nome Sobrenome"
                 {...register("ownerName", {
@@ -111,13 +114,14 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
               )}
             </div>
 
+            {/* Raça */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1">
                 <PiDna size={20} color="#FFF" />
                 <label className="text-white">Raça</label>
               </div>
               <input
-                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                className="w-full h-10 px-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
                 type="text"
                 placeholder="Raça"
                 {...register("race", { required: "Raça obrigatória" })}
@@ -127,13 +131,14 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
               )}
             </div>
 
+            {/* Telefone */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1">
                 <FaPhoneVolume size={20} color="#FFF" />
                 <label className="text-white">Telefone</label>
               </div>
               <input
-                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                className="w-full h-10 px-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
                 type="text"
                 placeholder="(00) 0 0000-0000"
                 {...register("phone", { required: "Telefone obrigatório" })}
@@ -143,15 +148,14 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
               )}
             </div>
 
+            {/* Data de Nascimento */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-1">
                 <IoMdCalendar size={20} color="#FFF" />
-                <label className="text-white">
-                  Nascimento <span className="text-gray-500">(Aproximado)</span>
-                </label>
+                <label className="text-white">Nascimento</label>
               </div>
               <input
-                className="w-full h-10 pl-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
+                className="w-full h-10 px-2 outline-none rounded-lg bg-transparent border-2 border-gray-500 text-gray-500"
                 type="date"
                 {...register("birth", {
                   required: "Data de nascimento obrigatória",
@@ -160,18 +164,18 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
             </div>
           </div>
 
-          <div className="flex justify-center gap-4 mt-12">
+          <div className="flex justify-center gap-4 mt-8">
             <button
               onClick={onClose}
-              className="flex items-center justify-center gap-1 bg-white font-bold text-blue-600 px-4 py-2 rounded-md w-full"
+              className="flex items-center justify-center gap-2 bg-white font-bold text-blue-600 px-4 py-2 rounded-md w-full"
             >
-              <IoArrowBackCircleOutline size={26} />
+              <IoArrowBackCircleOutline size={24} />
               Voltar
             </button>
             <button
               type="submit"
               disabled={!isValid || isSubmitting}
-              className={`flex items-center justify-center gap-1 bg-gradient-blue text-white font-bold px-4 py-2 rounded-md w-full ${
+              className={`flex items-center justify-center gap-2 bg-gradient-blue text-white font-bold px-4 py-2 rounded-md w-full ${
                 isSubmitting ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
