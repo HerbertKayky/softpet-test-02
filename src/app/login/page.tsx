@@ -33,6 +33,20 @@ export default function LoginPage() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    const result = await signIn("google", {
+      redirect: false,
+      callbackUrl: "/",
+    });
+
+    if (result?.error) {
+      console.error("Erro ao fazer login com Google:", result.error);
+    } else {
+      console.log("Login com Google bem-sucedido");
+      router.push("/");
+    }
+  };
+
   return (
     <div className="flex min-h-[calc(100vh-125px)] items-center justify-center">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
@@ -96,7 +110,7 @@ export default function LoginPage() {
         <div className="mt-4 text-center">
           <p className="text-sm text-gray-600">Ou logue pelo:</p>
           <button
-            onClick={() => signIn("google")}
+            onClick={handleGoogleLogin}
             className="mt-2 text-blue-500 hover:underline"
           >
             Google
