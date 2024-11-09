@@ -182,6 +182,7 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
                 isSubmitting ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
+              <AiOutlinePlusCircle size={25} color="#FFF" />
               {isSubmitting ? "Cadastrando..." : "Cadastrar"}
             </button>
           </div>

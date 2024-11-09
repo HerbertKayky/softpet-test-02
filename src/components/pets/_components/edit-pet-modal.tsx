@@ -197,6 +197,7 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
                 isSubmitting ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
+              <FaEdit size={25} color="#FFF" />
               {isSubmitting ? "Salvando..." : "Salvar"}
             </button>
           </div>

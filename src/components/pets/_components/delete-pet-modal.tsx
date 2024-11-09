@@ -132,6 +132,7 @@ const DeletePetModal: React.FC<
                   isRemoving ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
+                <FaRegTrashAlt size={23} color="#FFF" />
                 {isRemoving ? "Removendo..." : "Remover Pet"}
               </button>
             </div>
