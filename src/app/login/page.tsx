@@ -48,14 +48,16 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-125px)] items-center justify-center">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
+    <div className="flex min-h-[calc(100vh-125px)] items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-sm sm:max-w-md bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
+          Login
+        </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm sm:text-base font-medium text-gray-700"
             >
               Email
             </label>
@@ -63,7 +65,7 @@ export default function LoginPage() {
               type="email"
               id="email"
               {...register("email", { required: "O email é obrigatório" })}
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:border-blue-500 focus:outline-none"
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:p-3 focus:border-blue-500 focus:outline-none"
               placeholder="Seu email"
             />
             {errors.email && (
@@ -75,7 +77,7 @@ export default function LoginPage() {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm sm:text-base font-medium text-gray-700"
             >
               Senha
             </label>
@@ -83,7 +85,7 @@ export default function LoginPage() {
               type="password"
               id="password"
               {...register("password", { required: "A senha é obrigatória" })}
-              className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:border-blue-500 focus:outline-none"
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:p-3 focus:border-blue-500 focus:outline-none"
               placeholder="Sua senha"
             />
             {errors.password && (
@@ -94,13 +96,13 @@ export default function LoginPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-gradient-blue hover:bg-blue-600 text-white font-semibold rounded-md py-2"
+            className="w-full bg-gradient-blue hover:bg-blue-600 focus:bg-blue-700 text-white font-semibold rounded-md py-2 sm:py-3"
           >
             Entrar
           </button>
         </form>
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600">
             Não possui uma conta?{" "}
             <Link href="/register" className="text-blue-500 hover:underline">
               Cadastre-se aqui
@@ -108,7 +110,7 @@ export default function LoginPage() {
           </p>
         </div>
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">Ou logue pelo:</p>
+          <p className="text-sm sm:text-base text-gray-600">Ou logue pelo:</p>
           <button
             onClick={handleGoogleLogin}
             className="mt-2 text-blue-500 hover:underline"

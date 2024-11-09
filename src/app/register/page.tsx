@@ -50,14 +50,16 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-125px)] items-center justify-center">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center">Cadastro</h2>
+    <div className="flex min-h-[calc(100vh-125px)] items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-sm sm:max-w-md bg-white p-6 sm:p-8 rounded-lg shadow-lg">
+        <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
+          Cadastro
+        </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm sm:text-base font-medium text-gray-700"
             >
               Nome
             </label>
@@ -65,7 +67,7 @@ export default function RegisterPage() {
               type="text"
               id="name"
               {...register("name", { required: "O nome é obrigatório" })}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:p-3 focus:border-blue-500 focus:outline-none"
               placeholder="Seu nome"
             />
             {errors.name && (
@@ -75,7 +77,7 @@ export default function RegisterPage() {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm sm:text-base font-medium text-gray-700"
             >
               Email
             </label>
@@ -83,7 +85,7 @@ export default function RegisterPage() {
               type="email"
               id="email"
               {...register("email", { required: "O email é obrigatório" })}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:p-3 focus:border-blue-500 focus:outline-none"
               placeholder="Seu email"
             />
             {errors.email && (
@@ -95,7 +97,7 @@ export default function RegisterPage() {
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm sm:text-base font-medium text-gray-700"
             >
               Senha
             </label>
@@ -109,7 +111,7 @@ export default function RegisterPage() {
                   message: "A senha deve ter pelo menos 6 caracteres",
                 },
               })}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:p-3 focus:border-blue-500 focus:outline-none"
               placeholder="Sua senha"
             />
             {errors.password && (
@@ -121,7 +123,7 @@ export default function RegisterPage() {
           <div className="mb-6">
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm sm:text-base font-medium text-gray-700"
             >
               Confirmar Senha
             </label>
@@ -133,7 +135,7 @@ export default function RegisterPage() {
                 validate: (value) =>
                   value === password || "As senhas não coincidem",
               })}
-              className="mt-1 block w-full border border-gray-300 rounded px-3 py-2"
+              className="mt-1 block w-full border border-gray-300 rounded-md p-2 sm:p-3 focus:border-blue-500 focus:outline-none"
               placeholder="Confirme sua senha"
             />
             {errors.confirmPassword && (
@@ -144,13 +146,13 @@ export default function RegisterPage() {
           </div>
           <button
             type="submit"
-            className="w-full bg-gradient-blue hover:bg-blue-600 text-white font-semibold py-2 rounded"
+            className="w-full bg-gradient-blue hover:bg-blue-600 focus:bg-blue-700 text-white font-semibold py-2 sm:py-3 rounded-md"
           >
             Cadastrar
           </button>
         </form>
         <div className="mt-4 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600">
             Já possui uma conta?{" "}
             <Link href="/login" className="text-blue-500 hover:underline">
               Entre aqui
