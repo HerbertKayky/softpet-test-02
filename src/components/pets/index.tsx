@@ -148,10 +148,11 @@ export default function PetsSearch() {
             onKeyPress={handleKeyPress}
           />
           <button
-            className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
+            className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2 flex items-center gap-1"
             onClick={handleSearch}
           >
-            Pesquisar
+            <CiSearch size={24} />
+            <span className="hidden sm:inline">Pesquisar</span>
           </button>
           <button
             className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
@@ -161,11 +162,11 @@ export default function PetsSearch() {
           </button>
         </div>
         <button
-          className="flex items-center gap-1 px-3 py-2 bg-gradient-blue text-white rounded-md font-bold"
+          className="flex items-center justify-center gap-1 px-3 py-2 bg-gradient-blue text-white rounded-md font-bold"
           onClick={handleOpenModal}
         >
           <AiOutlinePlusCircle size={24} />
-          <span className="hidden sm:inline">Cadastrar</span>
+          <span className="sm:inline">Cadastrar</span>
         </button>
       </div>
 
