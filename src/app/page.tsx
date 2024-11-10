@@ -1,9 +1,9 @@
-import Pets from "@/components/pets";
+import PetsSearch from "@/components/pets";
 
 export default function Home() {
   return (
-    <div>
-      <Pets />
+    <div className="">
+      <PetsSearch />
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 import PetModal from "./_components/pet-modal";
 import EditPetModal from "./_components/edit-pet-modal";
 import DeletePetModal from "./_components/delete-pet-modal";
+import Footer from "../footer";
 
 export default function PetsSearch() {
   const { data: session } = useSession();
@@ -286,6 +287,7 @@ export default function PetsSearch() {
             Buscando pets...
           </p>
         )}
+        
       </main>
     </Container>
   );
