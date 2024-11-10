@@ -1,3 +1,12 @@
+import Link from "next/link";
+import {
+  FaGithub,
+  FaLinkedin,
+  FaFacebook,
+  FaInstagram,
+  FaTwitter,
+} from "react-icons/fa";
+
 const Footer = () => {
   return (
     <footer className="w-full bg-slate-900 text-white py-6">
@@ -10,44 +19,67 @@ const Footer = () => {
 
         {/* Links rápidos */}
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <a href="#about" className="hover:underline">
+          <Link href="#about" className="hover:underline">
             Sobre
-          </a>
-          <a href="#services" className="hover:underline">
+          </Link>
+          <Link href="#services" className="hover:underline">
             Serviços
-          </a>
-          <a href="#contact" className="hover:underline">
+          </Link>
+          <Link href="#contact" className="hover:underline">
             Contato
-          </a>
+          </Link>
         </div>
 
-        {/* Direitos autorais e redes sociais */}
+        {/* Direitos autorais, créditos e redes sociais */}
         <div className="flex flex-col items-center sm:items-end gap-2">
           <p className="text-sm">
             &copy; 2024 SoftPet. Todos os direitos reservados.
           </p>
+          <p className="text-sm">
+            Desenvolvido por <strong>Herbert Kayky</strong>
+          </p>
           <div className="flex gap-3">
-            <a
+            {/* GitHub e LinkedIn */}
+            <Link
+              href="https://github.com/herbertkayky"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              <FaGithub className="w-6 h-6" />
+            </Link>
+            <Link
+              href="https://www.linkedin.com/in/herbert-kayky-783705141/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              <FaLinkedin className="w-6 h-6" />
+            </Link>
+          </div>
+          {/* Redes sociais (opcional) */}
+          <div className="flex gap-3 mt-2">
+            <Link
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/facebook.svg" alt="Facebook" className="w-6 h-6" />
-            </a>
-            <a
+              <FaFacebook className="w-6 h-6" />
+            </Link>
+            <Link
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/instagram.svg" alt="Instagram" className="w-6 h-6" />
-            </a>
-            <a
+              <FaInstagram className="w-6 h-6" />
+            </Link>
+            <Link
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src="/twitter.svg" alt="Twitter" className="w-6 h-6" />
-            </a>
+              <FaTwitter className="w-6 h-6" />
+            </Link>
           </div>
         </div>
       </div>
