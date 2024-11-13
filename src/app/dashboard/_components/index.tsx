@@ -13,10 +13,10 @@ import EditPetModal from "@/components/pets/_components/edit-pet-modal";
 import { CiSearch } from "react-icons/ci";
 import { AiOutlineAudio, AiOutlinePlusCircle } from "react-icons/ai";
 import PetModal from "@/components/pets/_components/pet-modal";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export function DashboardPets() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [pets, setPets] = useState<PetProps[]>([]);
   const [openModal, setOpenModal] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,16 +27,16 @@ export function DashboardPets() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editPetData, setEditPetData] = useState<PetProps | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
-  if (!session) {
-    redirect("/");
-  }
+  const router = useRouter();
 
   useEffect(() => {
-    if (session) {
+    if (status === "loading") return;
+    if (!session) {
+      router.push("/");
+    } else {
       fetchUserPets();
     }
-  }, [session]);
+  }, [session, status]);
 
   const fetchUserPets = async (name: string = "") => {
     if (!session) return;
