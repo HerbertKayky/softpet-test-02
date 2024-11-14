@@ -162,7 +162,7 @@ export function DashboardPets() {
             onClick={handleOpenModal}
           >
             <AiOutlinePlusCircle size={24} />
-            <span className="hidden sm:inline">Cadastrar</span>
+            <span className="sm:inline">Cadastrar</span>
           </button>
         </div>
 
