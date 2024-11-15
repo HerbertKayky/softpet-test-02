@@ -9,19 +9,18 @@ import { PiDna } from "react-icons/pi";
 import { LuUserCircle2 } from "react-icons/lu";
 
 import { api } from "@/lib/api";
-import Container from "../container";
 import { PetProps } from "@/utils/pet.type";
 import { useSession } from "next-auth/react";
 import PetModal from "./_components/pet-modal";
 import EditPetModal from "./_components/edit-pet-modal";
 import DeletePetModal from "./_components/delete-pet-modal";
-import Footer from "../footer";
 
 export default function PetsSearch() {
   const { data: session } = useSession();
   const [pets, setPets] = useState<PetProps[]>([]);
   const [openModal, setOpenModal] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [searchPerformed, setSearchPerformed] = useState(false);
@@ -34,12 +33,15 @@ export default function PetsSearch() {
   }, []);
 
   const fetchPets = async (name: string = "") => {
+    setIsLoading(true);
     try {
       const response = await api.get("/api/pet", { params: { name } });
       setPets(response.data);
       setSearchPerformed(true);
     } catch (error) {
       console.error("Erro ao buscar pets:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -134,66 +136,48 @@ export default function PetsSearch() {
   };
 
   return (
-    <Container>
-      {/* Search e Botão de cadastro */}
-      <div className="flex flex-wrap w-full mb-4 gap-2">
-        <div className="flex flex-grow items-center border-2 rounded-md border-gray-700 h-12 sm:h-13">
-          <div className="bg-gray-700 p-3">
-            <CiSearch size={24} />
+    <div className="flex flex-col min-h-screen">
+      <main className="w-full mx-auto flex-grow">
+        <div className="flex flex-wrap w-full mb-4 gap-2">
+          <div className="flex flex-grow items-center border-2 rounded-md border-gray-700 h-12 sm:h-13">
+            <div className="bg-gray-700 p-3">
+              <CiSearch size={24} />
+            </div>
+            <input
+              className="w-full outline-none bg-transparent text-white font-medium text-base sm:text-lg py-2 px-2"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <button
+              className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2 flex items-center gap-1"
+              onClick={handleSearch}
+            >
+              <CiSearch size={24} />
+              <span className="hidden sm:inline">Pesquisar</span>
+            </button>
+            <button
+              className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
+              onClick={handleVoiceSearch}
+            >
+              <AiOutlineAudio size={24} />
+            </button>
           </div>
-          <input
-            className="w-full outline-none bg-transparent text-white font-medium text-base sm:text-lg py-2 px-2"
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={handleKeyPress}
-          />
           <button
-            className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2 flex items-center gap-1"
-            onClick={handleSearch}
+            className="flex items-center gap-1 px-3 py-2 bg-gradient-blue text-white rounded-md font-bold"
+            onClick={handleOpenModal}
           >
-            <CiSearch size={24} />
-            <span className="hidden sm:inline">Pesquisar</span>
-          </button>
-          <button
-            className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
-            onClick={handleVoiceSearch}
-          >
-            <AiOutlineAudio size={24} />
+            <AiOutlinePlusCircle size={24} />
+            <span className="sm:inline">Cadastrar</span>
           </button>
         </div>
-        <button
-          className="flex items-center justify-center gap-1 px-3 py-2 bg-gradient-blue text-white rounded-md font-bold"
-          onClick={handleOpenModal}
-        >
-          <AiOutlinePlusCircle size={24} />
-          <span className="sm:inline">Cadastrar</span>
-        </button>
-      </div>
 
-      <PetModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onSuccess={fetchPets}
-      />
-
-      <EditPetModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        onSuccess={fetchPets}
-        petData={editPetData}
-      />
-
-      <DeletePetModal
-        isOpen={isDeleteModalOpen}
-        onClose={() => setIsDeleteModalOpen(false)}
-        onSuccess={fetchPets}
-        petData={deletePetData}
-      />
-
-      {/* Pet List */}
-      <main className="w-full mx-auto px-2">
-        {pets.length > 0 ? (
+        {isLoading ? (
+          <p className="text-center text-white font-semibold">
+            Carregando, por favor aguarde...
+          </p>
+        ) : pets.length > 0 ? (
           <ul className="flex flex-wrap gap-4 justify-center">
             {pets.map((pet) => (
               <li
@@ -255,24 +239,22 @@ export default function PetsSearch() {
                       </p>
                     </div>
 
-                    {Number(session?.user?.id) === pet.userId && (
-                      <div className="flex flex-col gap-2">
-                        <button
-                          onClick={() => handleEditPet(pet)}
-                          className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2"
-                        >
-                          <FaEdit size={20} />
-                          Editar
-                        </button>
-                        <button
-                          onClick={() => handleDeletePet(pet)}
-                          className="bg-gradient-blue px-4 py-2 rounded-md text-white font-bold flex items-center justify-center gap-2"
-                        >
-                          <FaRegTrashAlt size={20} />
-                          Remover
-                        </button>
-                      </div>
-                    )}
+                    <div className="flex flex-col gap-2">
+                      <button
+                        onClick={() => handleEditPet(pet)}
+                        className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2"
+                      >
+                        <FaEdit size={20} />
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDeletePet(pet)}
+                        className="bg-gradient-blue px-4 py-2 rounded-md text-white font-bold flex items-center justify-center gap-2"
+                      >
+                        <FaRegTrashAlt size={20} />
+                        Remover
+                      </button>
+                    </div>
                   </div>
                 )}
               </li>
@@ -287,8 +269,26 @@ export default function PetsSearch() {
             Buscando pets...
           </p>
         )}
-        
+
+        <PetModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSuccess={fetchPets}
+        />
+
+        <DeletePetModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onSuccess={fetchPets}
+          petData={deletePetData}
+        />
+        <EditPetModal
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+          onSuccess={fetchPets}
+          petData={editPetData}
+        />
       </main>
-    </Container>
+    </div>
   );
 }

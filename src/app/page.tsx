@@ -1,13 +1,14 @@
+import Container from "@/components/container";
 import Footer from "@/components/footer";
 import PetsSearch from "@/components/pets";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <main className="flex-grow">
+    <>
+      <Container>
         <PetsSearch />
-      </main>
+      </Container>
       <Footer />
-    </div>
+    </>
   );
 }

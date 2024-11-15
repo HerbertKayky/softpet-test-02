@@ -13,7 +13,7 @@ import EditPetModal from "@/components/pets/_components/edit-pet-modal";
 import { CiSearch } from "react-icons/ci";
 import { AiOutlineAudio, AiOutlinePlusCircle } from "react-icons/ai";
 import PetModal from "@/components/pets/_components/pet-modal";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export function DashboardPets() {
   const { data: session, status } = useSession();
@@ -144,12 +144,12 @@ export function DashboardPets() {
               onKeyPress={handleKeyPress}
             />
             <button
-            className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2 flex items-center gap-1"
-            onClick={handleSearch}
-          >
-            <CiSearch size={24} />
-            <span className="hidden sm:inline">Pesquisar</span>
-          </button>
+              className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2 flex items-center gap-1"
+              onClick={handleSearch}
+            >
+              <CiSearch size={24} />
+              <span className="hidden sm:inline">Pesquisar</span>
+            </button>
             <button
               className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
               onClick={handleVoiceSearch}
