@@ -225,22 +225,24 @@ export default function PetsSearch() {
                       </p>
                     </div>
 
-                    <div className="flex flex-col gap-2">
-                      <button
-                        onClick={() => handleEditPet(pet)}
-                        className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2"
-                      >
-                        <FaEdit size={20} />
-                        Editar
-                      </button>
-                      <button
-                        onClick={() => handleDeletePet(pet)}
-                        className="bg-gradient-blue px-4 py-2 rounded-md text-white font-bold flex items-center justify-center gap-2"
-                      >
-                        <FaRegTrashAlt size={20} />
-                        Remover
-                      </button>
-                    </div>
+                    {Number(session?.user.id) === pet.userId && (
+                      <div className="flex flex-col gap-2">
+                        <button
+                          onClick={() => handleEditPet(pet)}
+                          className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2"
+                        >
+                          <FaEdit size={20} />
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDeletePet(pet)}
+                          className="bg-gradient-blue px-4 py-2 rounded-md text-white font-bold flex items-center justify-center gap-2"
+                        >
+                          <FaRegTrashAlt size={20} />
+                          Remover
+                        </button>
+                      </div>
+                    )}
                   </div>
                 )}
               </li>
