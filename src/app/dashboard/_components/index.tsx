@@ -14,6 +14,7 @@ import { CiSearch } from "react-icons/ci";
 import { AiOutlineAudio, AiOutlinePlusCircle } from "react-icons/ai";
 import PetModal from "@/components/pets/_components/pet-modal";
 import { useRouter } from "next/navigation";
+import { useVoiceSearch } from "@/hooks/useVoiceSearch";
 
 export function DashboardPets() {
   const { data: session, status } = useSession();
@@ -103,30 +104,15 @@ export function DashboardPets() {
     setIsModalOpen(true);
   };
 
-  const handleVoiceSearch = () => {
-    if (!("webkitSpeechRecognition" in window)) {
-      alert("Seu navegador não suporta reconhecimento de voz");
-      return;
-    }
-
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.lang = "pt-BR";
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    recognition.start();
-
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let transcript = event.results[0][0].transcript;
-      transcript = transcript.replace(/\.$/, "");
+  const { handleVoiceSearch } = useVoiceSearch({
+    onResult: (transcript) => {
       setSearchTerm(transcript);
       fetchUserPets(transcript);
-    };
-
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      console.error("Erro no reconhecimento de voz:", event.error);
-    };
-  };
+    },
+    onError: (error) => {
+      console.error("Erro no reconhecimento de voz:", error);
+    },
+  });
 
   return (
     <div className="flex flex-col min-h-screen">

@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react";
 import PetModal from "./_components/pet-modal";
 import EditPetModal from "./_components/edit-pet-modal";
 import DeletePetModal from "./_components/delete-pet-modal";
+import { useVoiceSearch } from "@/hooks/useVoiceSearch";
 
 export default function PetsSearch() {
   const { data: session } = useSession();
@@ -110,30 +111,15 @@ export default function PetsSearch() {
     }
   };
 
-  const handleVoiceSearch = () => {
-    if (!("webkitSpeechRecognition" in window)) {
-      alert("Seu navegador não suporta reconhecimento de voz");
-      return;
-    }
-
-    const recognition = new window.webkitSpeechRecognition();
-    recognition.lang = "pt-BR";
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-
-    recognition.start();
-
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let transcript = event.results[0][0].transcript;
-      transcript = transcript.replace(/\.$/, "");
+  const { handleVoiceSearch } = useVoiceSearch({
+    onResult: (transcript) => {
       setSearchTerm(transcript);
       fetchPets(transcript);
-    };
-
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      console.error("Erro no reconhecimento de voz:", event.error);
-    };
-  };
+    },
+    onError: (error) => {
+      console.error("Erro no reconhecimento de voz:", error);
+    },
+  });
 
   return (
     <div className="flex flex-col min-h-screen">
