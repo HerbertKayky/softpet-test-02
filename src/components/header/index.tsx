@@ -31,16 +31,13 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-3">
-          <h1 className="text-white text-sm sm:text-lg">
-            {session?.user?.email}
-          </h1>
-
           {session ? (
-            <div className="flex items-center gap-2">
-              <h1 className="text-sm sm:text-xl text-white">
-                Olá {session?.user?.name}
-              </h1>
-              <button onClick={() => signOut()} className="">
+            <div className="">
+              <button
+                onClick={() => signOut()}
+                className="text-white flex gap-2"
+              >
+                Sair
                 <FiLogOut size={24} color="#FFF" />
               </button>
             </div>
