@@ -37,6 +37,15 @@ export function Header() {
               <span className="text-white hidden sm:inline">
                 Olá, {session.user?.name}
               </span>
+
+              <Link
+                href="/perfil"
+                className="text-white hover:text-gray-300 transition-all"
+                title="Configurações de Perfil"
+              >
+                <FaRegUser size={24} />
+              </Link>
+
               <button
                 onClick={() => signOut()}
                 className="text-white flex items-center gap-2 hover:text-gray-300 transition-all"
