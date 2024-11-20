@@ -6,6 +6,7 @@ import { LuUserCircle2 } from "react-icons/lu";
 import { MdOutlineEmail } from "react-icons/md";
 import { useState } from "react";
 import { api } from "@/lib/api";
+import Footer from "@/components/footer";
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -101,6 +102,7 @@ export default function Profile() {
           </div>
         </div>
       </main>
+      <Footer />
 
       {/* Modal para alterar email */}
       {showChangeEmailModal && (
