@@ -1,4 +1,5 @@
 "use client";
+
 import { useSession, signOut } from "next-auth/react";
 import { FaEdit, FaKey, FaSignOutAlt } from "react-icons/fa";
 import { LuUserCircle2 } from "react-icons/lu";
@@ -9,11 +10,12 @@ import { api } from "@/lib/api";
 export default function Profile() {
   const { data: session } = useSession();
   const [showChangePassword, setShowChangePassword] = useState(false);
+  const [showChangeEmail, setShowChangeEmail] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [newEmail, setNewEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  // Função para alterar a senha
   const handleChangePassword = async () => {
     try {
       const response = await api.post("/api/user/change-password", {
@@ -26,6 +28,19 @@ export default function Profile() {
       setShowChangePassword(false);
     } catch (error: any) {
       setMessage(error.response?.data?.error || "Erro ao alterar senha.");
+    }
+  };
+
+  const handleChangeEmail = async () => {
+    try {
+      const response = await api.post("/api/user/change-email", {
+        newEmail,
+      });
+      setMessage(response.data.message);
+      setNewEmail("");
+      setShowChangeEmail(false);
+    } catch (error: any) {
+      setMessage(error.response?.data?.error || "Erro ao alterar email.");
     }
   };
 
@@ -52,10 +67,32 @@ export default function Profile() {
           </div>
 
           <div className="flex flex-col gap-2 mt-4">
-            <button className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2">
+            <button
+              className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2"
+              onClick={() => setShowChangeEmail(!showChangeEmail)}
+            >
               <FaEdit size={20} />
               Editar Email
             </button>
+
+            {showChangeEmail && (
+              <div className="flex flex-col gap-2 mt-4">
+                <input
+                  type="email"
+                  placeholder="Novo email"
+                  className="p-2 rounded-md outline-none"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                />
+                <button
+                  className="bg-gradient-blue px-4 py-2 rounded-md text-white font-bold"
+                  onClick={handleChangeEmail}
+                >
+                  Confirmar Alteração
+                </button>
+                {message && <p className="text-white">{message}</p>}
+              </div>
+            )}
 
             <button
               className="bg-white px-4 py-2 rounded-md text-blue-600 font-bold flex items-center justify-center gap-2"
