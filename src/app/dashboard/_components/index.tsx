@@ -15,6 +15,7 @@ import { AiOutlineAudio, AiOutlinePlusCircle } from "react-icons/ai";
 import PetModal from "@/components/pets/_components/pet-modal";
 import { useRouter } from "next/navigation";
 import { useVoiceSearch } from "@/hooks/useVoiceSearch";
+import Image from "next/image";
 
 export function DashboardPets() {
   const { data: session, status } = useSession();
@@ -37,7 +38,7 @@ export function DashboardPets() {
     } else {
       fetchUserPets();
     }
-  }, [session, status]);
+  }, [session, status, router]);
 
   const fetchUserPets = async (name: string = "") => {
     if (!session) return;
@@ -166,10 +167,12 @@ export function DashboardPets() {
                 } bg-gradient-dark-blue outline-none hover:outline-2 hover:outline-blue-500 transition-all`}
               >
                 <div className="rounded-full p-3 mx-2 bg-gradient-blue">
-                  <img
+                  <Image
                     src={pet.pet === "CAT" ? "/cat.svg" : "/dog.svg"}
                     alt="ícone do animal"
                     className="w-10 h-10"
+                    width={40}
+                    height={40}
                   />
                 </div>
 

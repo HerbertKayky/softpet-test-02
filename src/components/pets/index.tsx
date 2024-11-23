@@ -15,6 +15,7 @@ import PetModal from "./_components/pet-modal";
 import EditPetModal from "./_components/edit-pet-modal";
 import DeletePetModal from "./_components/delete-pet-modal";
 import { useVoiceSearch } from "@/hooks/useVoiceSearch";
+import Image from "next/image";
 
 export default function PetsSearch() {
   const { data: session } = useSession();
@@ -173,10 +174,12 @@ export default function PetsSearch() {
                 } bg-gradient-dark-blue outline-none hover:outline-2 hover:outline-blue-500 transition-all`}
               >
                 <div className="rounded-full p-3 mx-2 bg-gradient-blue">
-                  <img
+                  <Image
                     src={pet.pet === "CAT" ? "/cat.svg" : "/dog.svg"}
                     alt="ícone do animal"
                     className="w-10 h-10"
+                    width={15}
+                    height={15}
                   />
                 </div>
 

@@ -4,16 +4,19 @@ import { LuUserCircle2 } from "react-icons/lu";
 import { MdOutlineEmail } from "react-icons/md";
 import { FaEdit, FaKey, FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "next-auth/react";
+import { Session } from "next-auth";
+
+interface UserDetailsProps {
+  session: Session | null;
+  onChangeEmail: () => void;
+  onChangePassword: () => void;
+}
 
 export default function UserDetails({
   session,
   onChangeEmail,
   onChangePassword,
-}: {
-  session: any;
-  onChangeEmail: () => void;
-  onChangePassword: () => void;
-}) {
+}: UserDetailsProps) {
   return (
     <main className="w-full mx-auto flex-grow flex flex-col items-center p-4">
       <h1 className="text-xl sm:text-2xl text-white font-bold text-center mb-6">

@@ -5,6 +5,7 @@ import { redirect, useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { api } from "@/lib/api";
 import { useSession } from "next-auth/react";
+import { AxiosError } from "axios";
 
 type RegisterFormInputs = {
   name: string;
@@ -40,9 +41,9 @@ export default function RegisterPage() {
       if (response.status === 200) {
         router.push("/login");
       }
-    } catch (error: any) {
-      if (error.response) {
-        alert(error.response.data.error);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        alert(error.response?.data.error);
       } else {
         alert("Erro ao cadastrar usuário. Tente novamente mais tarde.");
       }

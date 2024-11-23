@@ -1,13 +1,13 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
-import { FaEdit, FaKey, FaSignOutAlt } from "react-icons/fa";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import Footer from "@/components/footer";
 import { api } from "@/lib/api";
 import Modal from "./_components/modal";
 import PasswordInput from "./_components/password-input";
 import UserDetails from "./_components/user-detail";
+import { AxiosError } from "axios";
 
 export default function Profile() {
   const { data: session } = useSession();
@@ -36,8 +36,12 @@ export default function Profile() {
       setNewPassword("");
       setConfirmPassword("");
       setShowChangePasswordModal(false);
-    } catch (error: any) {
-      setMessage(error.response?.data?.error || "Erro ao alterar senha.");
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setMessage(error.response?.data?.error || "Erro ao alterar senha.");
+      } else {
+        setMessage("Erro inesperado.");
+      }
     }
   };
 
@@ -49,8 +53,12 @@ export default function Profile() {
       setMessage(response.data.message);
       setNewEmail("");
       setShowChangeEmailModal(false);
-    } catch (error: any) {
-      setMessage(error.response?.data?.error || "Erro ao alterar email.");
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        setMessage(error.response?.data?.error || "Erro ao alterar email.");
+      } else {
+        setMessage("Erro inesperado.");
+      }
     }
   };
 

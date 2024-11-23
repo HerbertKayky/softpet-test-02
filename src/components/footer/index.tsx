@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   FaGithub,
@@ -13,7 +14,13 @@ const Footer = () => {
       <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 px-4">
         {/* Logo e Nome do Projeto */}
         <div className="flex items-center gap-2">
-          <img src="/logo.svg" alt="Logo" className="w-15 h-15" />
+          <Image
+            src="/logo.svg"
+            alt="Logo"
+            className="w-15 h-15"
+            width={35}
+            height={35}
+          />
           <p className="text-2xl font-medium">SoftPet</p>
         </div>
 

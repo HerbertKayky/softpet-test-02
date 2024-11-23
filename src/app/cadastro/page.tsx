@@ -21,7 +21,6 @@ export default async function CadastroPet() {
     const race = formData.get("race");
     const birth = formData.get("birth");
 
-    // Validação básica
     if (!name || !ownerName || !phone || !petType || !race || !birth) {
       return;
     }
@@ -29,7 +28,7 @@ export default async function CadastroPet() {
     if (!session?.user.id) {
       return;
     }
-''
+
     await prismaClient.pet.create({
       data: {
         name: name as string,

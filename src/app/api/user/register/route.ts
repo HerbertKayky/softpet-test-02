@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       message: "Usuário cadastrado com sucesso",
       user,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Erro ao registrar o usuário" },
       { status: 500 }
