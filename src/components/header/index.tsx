@@ -6,13 +6,14 @@ import { FaRegUser } from "react-icons/fa";
 import { signOut, useSession } from "next-auth/react";
 import { FiLogOut } from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
-
+import { HiOutlineDotsVertical } from "react-icons/hi";
 import Link from "next/link";
 import { useState } from "react";
 
 export function Header() {
   const { data: session } = useSession();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <Container>
@@ -34,39 +35,85 @@ export function Header() {
             </Link>
           )}
 
-          <div>
-            <IoMdNotificationsOutline
-              onClick={() => setIsModalOpen(true)}
-              className=""
-              size={30}
-              color="#FFF"
-            />
+          <div className="flex">
+            <button onClick={() => setIsModalOpen(true)}>
+              <IoMdNotificationsOutline size={30} color="#FFF" />
+            </button>
           </div>
         </div>
 
         <div className="flex items-center gap-4">
           {session ? (
-            <div className="flex items-center gap-3">
-              <span className="text-white hidden sm:inline">
-                Olá, {session.user?.name}
-              </span>
-
-              <Link
-                href="/perfil"
-                className="text-white hover:text-gray-300 transition-all"
-                title="Configurações de Perfil"
-              >
-                <FaRegUser size={24} />
-              </Link>
-
+            <>
               <button
-                onClick={() => signOut()}
-                className="text-white flex items-center gap-2 hover:text-gray-300 transition-all"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="sm:hidden text-white hover:text-gray-300 transition-all"
               >
-                Sair
-                <FiLogOut size={20} color="#FFF" />
+                <HiOutlineDotsVertical size={30} />
               </button>
-            </div>
+
+              {isMenuOpen && (
+                <div
+                  className="fixed inset-0 bg-black bg-opacity-50 z-50"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <div
+                    className="absolute top-0 right-0 w-60 h-full bg-gradient-dark-blue shadow-lg p-6"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <button
+                      onClick={() => setIsMenuOpen(false)}
+                      className="text-white font-bold mb-4 hover:text-gray-700 transition border px-2 py-1 rounded-md border-gray-400"
+                    >
+                      Fechar
+                    </button>
+
+                    <span className="mx-3 text-white">
+                      Olá, {session.user.name}
+                    </span>
+
+                    <Link
+                      href="/perfil"
+                      className="flex mt-1 items-center gap-2 text-white font-medium mb-4 hover:text-gray-700 transition"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <FaRegUser size={24} />
+                      Perfil
+                    </Link>
+                    <button
+                      onClick={() => {
+                        signOut();
+                        setIsMenuOpen(false);
+                      }}
+                      className="flex items-center gap-2 text-red-500 font-medium hover:text-red-600 transition"
+                    >
+                      <FiLogOut size={20} />
+                      Sair
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div className="hidden sm:flex items-center gap-3">
+                <span className="text-white hidden sm:inline">
+                  Olá, {session.user?.name}
+                </span>
+                <Link
+                  href="/perfil"
+                  className="text-white hover:text-gray-300 transition-all"
+                  title="Configurações de Perfil"
+                >
+                  <FaRegUser size={24} />
+                </Link>
+                <button
+                  onClick={() => signOut()}
+                  className="text-white flex items-center gap-2 hover:text-gray-300 transition-all"
+                >
+                  Sair
+                  <FiLogOut size={20} color="#FFF" />
+                </button>
+              </div>
+            </>
           ) : (
             <Link href="/login">
               <button className="text-white text-base font-medium hover:text-gray-300 transition">
@@ -76,11 +123,14 @@ export function Header() {
           )}
         </div>
       </header>
+
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 text-center max-w-sm w-full">
-            <h2 className="text-xl font-semibold mb-4">Sobre este Projeto</h2>
-            <p className="text-gray-700 mb-6">
+          <div className="bg-gradient-blue rounded-lg shadow-lg p-6 text-center max-w-sm w-full">
+            <h2 className="text-xl font-semibold mb-4 text-slate-200 underline">
+              Sobre este Projeto
+            </h2>
+            <p className="text-white mb-6">
               Este projeto foi desenvolvido utilizando{" "}
               <strong>Next.js 14</strong> com o front-end hospedado na
               <strong> Vercel</strong>. A autenticação de usuários foi
@@ -91,7 +141,7 @@ export function Header() {
             </p>
             <button
               onClick={() => setIsModalOpen(false)}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
             >
               Fechar
             </button>
