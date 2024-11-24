@@ -7,6 +7,10 @@ import { FaEdit, FaPhoneVolume, FaRegTrashAlt } from "react-icons/fa";
 import { IoIosArrowDown, IoIosArrowUp, IoMdCalendar } from "react-icons/io";
 import { PiDna } from "react-icons/pi";
 import { LuUserCircle2 } from "react-icons/lu";
+import {
+  IoArrowBackCircleOutline,
+  IoArrowForwardCircleOutline,
+} from "react-icons/io5";
 
 import { api } from "@/lib/api";
 import { PetProps } from "@/utils/pet.type";
@@ -29,21 +33,42 @@ export default function PetsSearch() {
   const [editPetData, setEditPetData] = useState<PetProps | null>(null);
   const [deletePetData, setDeletePetData] = useState<PetProps | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     fetchPets();
   }, []);
 
-  const fetchPets = async (name: string = "") => {
+  const fetchPets = async (name: string = "", page: number = 1) => {
     setIsLoading(true);
     try {
-      const response = await api.get("/api/pet", { params: { name } });
-      setPets(response.data);
+      const response = await api.get("/api/pet", {
+        params: { name, page, limit: 25 },
+      });
+      setPets(response.data.pets);
+      setTotalPages(response.data.totalPages);
       setSearchPerformed(true);
     } catch (error) {
       console.error("Erro ao buscar pets:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      fetchPets(searchTerm, nextPage);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      const previousPage = currentPage - 1;
+      setCurrentPage(previousPage);
+      fetchPets(searchTerm, previousPage);
     }
   };
 
@@ -86,7 +111,6 @@ export default function PetsSearch() {
     let age = today.getFullYear() - birth.getFullYear();
     const monthDifference = today.getMonth() - birth.getMonth();
 
-    // Ajusta a idade se o mês atual for anterior ao mês de nascimento
     if (
       monthDifference < 0 ||
       (monthDifference === 0 && today.getDate() < birth.getDate())
@@ -96,7 +120,7 @@ export default function PetsSearch() {
 
     if (age < 1) {
       const months =
-        monthDifference >= 0 ? monthDifference : 12 + monthDifference; // Considera meses negativos
+        monthDifference >= 0 ? monthDifference : 12 + monthDifference;
 
       return `${months} ${months === 1 ? "mês" : "meses"}`;
     }
@@ -280,6 +304,17 @@ export default function PetsSearch() {
           petData={editPetData}
         />
       </main>
+      <div className="flex justify-center sm:justify-end pb-3 pt-8">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+          <IoArrowBackCircleOutline size={30} color="#FFF" />
+        </button>
+        <span className="px-2 py-2 text-white">
+          {currentPage} de {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          <IoArrowForwardCircleOutline size={30} color="#FFF" />
+        </button>
+      </div>
     </div>
   );
 }

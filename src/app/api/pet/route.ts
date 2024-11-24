@@ -42,6 +42,10 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const name = searchParams.get("name") || "";
+  const page = parseInt(searchParams.get("page") || "1", 10);
+  const limit = parseInt(searchParams.get("limit") || "10", 10);
+
+  const skip = (page - 1) * limit;
 
   try {
     const pets = await prismaClient.pet.findMany({
@@ -51,13 +55,29 @@ export async function GET(request: Request) {
           mode: "insensitive",
         },
       },
+      skip,
+      take: limit,
     });
-    return NextResponse.json(pets);
+
+    const totalPets = await prismaClient.pet.count({
+      where: {
+        name: {
+          contains: name,
+        },
+      },
+    });
+
+    return NextResponse.json({
+      pets,
+      totalPets,
+      totalPages: Math.ceil(totalPets / limit),
+      currentPage: page,
+    });
   } catch (err) {
-    console.error("Erro ao buscar pets: ", err);
+    console.error("Erro ao buscar pets:", err);
     return NextResponse.json(
-      { error: "Falha ao buscar pets" },
-      { status: 500 }
+      { error: "failed to fetch pets" },
+      { status: 400 }
     );
   }
 }
