@@ -18,35 +18,6 @@
   }
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
-  height: 100%;
-  overflow-x: hidden;
-}
-
-body {
-  box-sizing: border-box;
-}
-
-:root {
-  --vh: 100vh;
-}
-
-@supports (-webkit-touch-callout: none) {
-  :root {
-    --vh: calc(env(safe-area-inset-top) + 100vh);
-  }
-}
-
-html,
-body {
-  height: var(--vh);
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
