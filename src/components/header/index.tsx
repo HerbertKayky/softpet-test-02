@@ -5,10 +5,14 @@ import Container from "../container";
 import { FaRegUser } from "react-icons/fa";
 import { signOut, useSession } from "next-auth/react";
 import { FiLogOut } from "react-icons/fi";
+import { IoMdNotificationsOutline } from "react-icons/io";
+
 import Link from "next/link";
+import { useState } from "react";
 
 export function Header() {
   const { data: session } = useSession();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <Container>
@@ -29,6 +33,15 @@ export function Header() {
               Meus Pets
             </Link>
           )}
+
+          <div>
+            <IoMdNotificationsOutline
+              onClick={() => setIsModalOpen(true)}
+              className=""
+              size={30}
+              color="#FFF"
+            />
+          </div>
         </div>
 
         <div className="flex items-center gap-4">
@@ -63,6 +76,28 @@ export function Header() {
           )}
         </div>
       </header>
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 text-center max-w-sm w-full">
+            <h2 className="text-xl font-semibold mb-4">Sobre este Projeto</h2>
+            <p className="text-gray-700 mb-6">
+              Este projeto foi desenvolvido utilizando{" "}
+              <strong>Next.js 14</strong> com o front-end hospedado na
+              <strong> Vercel</strong>. A autenticação de usuários foi
+              implementada com <strong>NextAuth</strong>, enquanto o banco de
+              dados <strong>PostgreSQL</strong> está hospedado na{" "}
+              <strong>Railway.app</strong>. O gerenciamento do banco de dados
+              foi feito utilizando o <strong>Prisma ORM</strong>.
+            </p>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      )}
     </Container>
   );
 }
