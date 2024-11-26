@@ -16,6 +16,10 @@ import PetModal from "@/components/pets/_components/pet-modal";
 import { useRouter } from "next/navigation";
 import { useVoiceSearch } from "@/hooks/useVoiceSearch";
 import Image from "next/image";
+import {
+  IoArrowBackCircleOutline,
+  IoArrowForwardCircleOutline,
+} from "react-icons/io5";
 
 export function DashboardPets() {
   const { data: session, status } = useSession();
@@ -29,6 +33,8 @@ export function DashboardPets() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [editPetData, setEditPetData] = useState<PetProps | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,12 +46,15 @@ export function DashboardPets() {
     }
   }, [session, status, router]);
 
-  const fetchUserPets = async (name: string = "") => {
+  const fetchUserPets = async (name: string = "", page: number = 1) => {
     if (!session) return;
     setIsLoading(true);
     try {
-      const response = await api.get("/api/pet/user", { params: { name } });
-      setPets(response.data);
+      const response = await api.get("/api/pet/user", {
+        params: { name, page, limit: 25 },
+      });
+      setPets(response.data.pets);
+      setTotalPages(response.data.totalPages);
       setSearchPerformed(true);
     } catch (error) {
       console.error("Erro ao buscar pets:", error);
@@ -53,6 +62,23 @@ export function DashboardPets() {
       setIsLoading(false);
     }
   };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      fetchUserPets(searchTerm, nextPage);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      const previousPage = currentPage - 1;
+      setCurrentPage(previousPage);
+      fetchUserPets(searchTerm, previousPage);
+    }
+  };
+
   const handleSearch = () => {
     fetchUserPets(searchTerm);
   };
@@ -271,6 +297,17 @@ export function DashboardPets() {
           petData={editPetData}
         />
       </main>
+      <div className="flex justify-center sm:justify-end pb-3 pt-8">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+          <IoArrowBackCircleOutline size={30} color="#FFF" />
+        </button>
+        <span className="px-2 py-2 text-white">
+          {currentPage} de {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          <IoArrowForwardCircleOutline size={30} color="#FFF" />
+        </button>
+      </div>
     </div>
   );
 }
