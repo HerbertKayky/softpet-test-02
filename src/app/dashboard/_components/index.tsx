@@ -27,7 +27,6 @@ export function DashboardPets() {
   const [openModal, setOpenModal] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchPerformed, setSearchPerformed] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [deletePetData, setDeletePetData] = useState<PetProps | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -42,9 +41,12 @@ export function DashboardPets() {
     if (!session) {
       router.push("/");
     } else {
-      fetchUserPets();
+      const delayDebounceFn = setTimeout(() => {
+        fetchUserPets(searchTerm);
+      }, 300);
+      return () => clearTimeout(delayDebounceFn);
     }
-  }, [session, status, router]);
+  }, [session, status, router, searchTerm]);
 
   const fetchUserPets = async (name: string = "", page: number = 1) => {
     if (!session) return;
@@ -55,7 +57,6 @@ export function DashboardPets() {
       });
       setPets(response.data.pets);
       setTotalPages(response.data.totalPages);
-      setSearchPerformed(true);
     } catch (error) {
       console.error("Erro ao buscar pets:", error);
     } finally {
@@ -79,16 +80,6 @@ export function DashboardPets() {
     }
   };
 
-  const handleSearch = () => {
-    fetchUserPets(searchTerm);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
-
   const toggleModal = (id: number) => {
     setOpenModal(openModal === id ? null : id);
   };
@@ -99,7 +90,6 @@ export function DashboardPets() {
     let age = today.getFullYear() - birth.getFullYear();
     const monthDifference = today.getMonth() - birth.getMonth();
 
-    // Ajusta a idade se o mês atual for anterior ao mês de nascimento
     if (
       monthDifference < 0 ||
       (monthDifference === 0 && today.getDate() < birth.getDate())
@@ -109,7 +99,7 @@ export function DashboardPets() {
 
     if (age < 1) {
       const months =
-        monthDifference >= 0 ? monthDifference : 12 + monthDifference; // Considera meses negativos
+        monthDifference >= 0 ? monthDifference : 12 + monthDifference;
 
       return `${months} ${months === 1 ? "mês" : "meses"}`;
     }
@@ -154,15 +144,9 @@ export function DashboardPets() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={handleKeyPress}
+              placeholder="Digite o nome do pet"
             />
-            <button
-              className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2 flex items-center gap-1"
-              onClick={handleSearch}
-            >
-              <CiSearch size={24} />
-              <span className="hidden sm:inline">Pesquisar</span>
-            </button>
+
             <button
               className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
               onClick={handleVoiceSearch}
@@ -268,14 +252,12 @@ export function DashboardPets() {
               </li>
             ))}
           </ul>
-        ) : searchPerformed ? (
-          <p className="text-white font-semibold text-center">
-            Nenhum pet encontrado
-          </p>
         ) : (
-          <p className="text-white font-semibold text-center">
-            Buscando pets...
-          </p>
+          searchTerm && (
+            <p className="text-white font-semibold text-center">
+              Nenhum pet encontrado com esse nome.
+            </p>
+          )
         )}
 
         <PetModal
