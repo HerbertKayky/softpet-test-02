@@ -29,7 +29,6 @@ export default function PetsSearch() {
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [searchPerformed, setSearchPerformed] = useState(false);
   const [editPetData, setEditPetData] = useState<PetProps | null>(null);
   const [deletePetData, setDeletePetData] = useState<PetProps | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -37,8 +36,12 @@ export default function PetsSearch() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    fetchPets();
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      fetchPets(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
 
   const fetchPets = async (name: string = "", page: number = 1) => {
     setIsLoading(true);
@@ -48,7 +51,6 @@ export default function PetsSearch() {
       });
       setPets(response.data.pets);
       setTotalPages(response.data.totalPages);
-      setSearchPerformed(true);
     } catch (error) {
       console.error("Erro ao buscar pets:", error);
     } finally {
@@ -88,16 +90,6 @@ export default function PetsSearch() {
       setIsDeleteModalOpen(true);
     } else {
       alert("Você não pode remover esse pet");
-    }
-  };
-
-  const handleSearch = () => {
-    fetchPets(searchTerm);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSearch();
     }
   };
 
@@ -159,15 +151,9 @@ export default function PetsSearch() {
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={handleKeyPress}
+              placeholder="Digite o nome do pet"
             />
-            <button
-              className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2 flex items-center gap-1"
-              onClick={handleSearch}
-            >
-              <CiSearch size={24} />
-              <span className="hidden sm:inline">Pesquisar</span>
-            </button>
+
             <button
               className="bg-gray-700 px-3 py-2 font-medium text-white rounded-md mr-2"
               onClick={handleVoiceSearch}
@@ -275,14 +261,12 @@ export default function PetsSearch() {
               </li>
             ))}
           </ul>
-        ) : searchPerformed ? (
-          <p className="text-white font-semibold text-center">
-            Nenhum pet encontrado
-          </p>
         ) : (
-          <p className="text-white font-semibold text-center">
-            Buscando pets...
-          </p>
+          searchTerm && (
+            <p className="text-white font-semibold text-center">
+              Nenhum pet encontrado com esse nome.
+            </p>
+          )
         )}
 
         <PetModal
