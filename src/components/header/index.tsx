@@ -23,7 +23,7 @@ export function Header() {
             href="/"
             onClick={(e) => {
               e.preventDefault();
-              window.location.reload();
+              window.location.href = "/";
             }}
             className="flex items-center gap-2"
           >
