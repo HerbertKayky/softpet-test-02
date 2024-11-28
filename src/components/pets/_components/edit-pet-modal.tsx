@@ -65,8 +65,14 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-20 p-4">
-      <div className="bg-gradient-dark-blue shadow-xl w-full max-w-xl p-6 sm:p-10 rounded-lg border-2 border-blue-500">
+    <div
+      className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-20 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-gradient-dark-blue shadow-xl w-full max-w-xl p-6 sm:p-10 rounded-lg border-2 border-blue-500"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex items-center justify-between mb-8 text-white">
           <div className="flex items-center gap-4">
             <div className="rounded-full bg-gradient-blue p-3">
