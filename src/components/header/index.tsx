@@ -19,7 +19,14 @@ export function Header() {
     <Container>
       <header className="flex flex-wrap items-center justify-between py-5 sm:py-10">
         <div className="flex items-center gap-4">
-          <Link href="/" className="flex items-center gap-2">
+          <Link
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.reload();
+            }}
+            className="flex items-center gap-2"
+          >
             <Image src={logoimg} alt="Logo Softmakers" width={50} height={50} />
             <h1 className="text-white font-semibold text-2xl sm:text-3xl">
               SoftPet
