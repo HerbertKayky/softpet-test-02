@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 type LoginFormInputs = {
   email: string;
@@ -17,6 +18,7 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm<LoginFormInputs>();
 
+  const [loginError, setLoginError] = useState<string | null>(null);
   const router = useRouter();
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
@@ -26,9 +28,9 @@ export default function LoginPage() {
     });
 
     if (result?.error) {
-      console.error("Erro ao fazer login:", result.error);
+      setLoginError("Credenciais inválidas. Tente novamente.");
     } else {
-      console.log("Login bem-sucedido");
+      setLoginError(null);
       router.push("/");
     }
   };
@@ -40,9 +42,9 @@ export default function LoginPage() {
     });
 
     if (result?.error) {
-      console.error("Erro ao fazer login com Google:", result.error);
+      setLoginError("Erro ao fazer login com Google. Tente novamente.");
     } else {
-      console.log("Login com Google bem-sucedido");
+      setLoginError(null);
       router.push("/");
     }
   };
@@ -53,6 +55,9 @@ export default function LoginPage() {
         <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
           Login
         </h2>
+        {loginError && (
+          <div className="mb-4 text-red-600 text-center">{loginError}</div>
+        )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-4">
             <label
