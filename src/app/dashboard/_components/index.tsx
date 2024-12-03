@@ -252,12 +252,14 @@ export function DashboardPets() {
               </li>
             ))}
           </ul>
+        ) : searchTerm ? (
+          <p className="text-white font-semibold text-center">
+            Nenhum pet encontrado com esse nome.
+          </p>
         ) : (
-          searchTerm && (
-            <p className="text-white font-semibold text-center">
-              Nenhum pet encontrado com esse nome.
-            </p>
-          )
+          <p className="text-white font-semibold text-center">
+            Você não possui pets cadastrados.
+          </p>
         )}
 
         <PetModal
