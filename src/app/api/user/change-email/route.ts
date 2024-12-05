@@ -25,7 +25,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Verifica se o novo email já está em uso
     const existingUser = await prismaClient.user.findUnique({
       where: { email: newEmail },
     });
@@ -37,7 +36,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Atualiza o email no banco de dados
     await prismaClient.user.update({
       where: { email: session.user.email },
       data: { email: newEmail },
