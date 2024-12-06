@@ -72,12 +72,6 @@ export default function Profile() {
         onChangePassword={() => setShowChangePasswordModal(true)}
       />
 
-      {isGoogleUser && (
-        <p className="text-center text-red-500 font-medium my-4">
-          Usuários autenticados pelo Google não podem alterar e-mail ou senha.
-        </p>
-      )}
-
       <Footer />
 
       {showChangeEmailModal && (
@@ -86,22 +80,28 @@ export default function Profile() {
           onClose={() => setShowChangeEmailModal(false)}
         >
           <div className="flex flex-col gap-4">
-            <input
-              type="email"
-              placeholder="Novo email"
-              className="p-2 rounded-md outline-none border border-gray-300"
-              value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}
-              disabled={isGoogleUser}
-            />
-            <button
-              className="bg-blue-500 px-4 py-2 rounded-md text-white font-bold hover:bg-blue-600"
-              onClick={handleChangeEmail}
-              disabled={isGoogleUser}
-            >
-              Confirmar
-            </button>
-            {message && <p className="text-sm text-gray-100">{message}</p>}
+            {isGoogleUser ? (
+              <p className="text-red-500">
+                Usuários autenticados pelo Google não podem alterar o e-mail.
+              </p>
+            ) : (
+              <>
+                <input
+                  type="email"
+                  placeholder="Novo email"
+                  className="p-2 rounded-md outline-none border border-gray-300"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                />
+                <button
+                  className="bg-blue-500 px-4 py-2 rounded-md text-white font-bold hover:bg-blue-600"
+                  onClick={handleChangeEmail}
+                >
+                  Confirmar
+                </button>
+              </>
+            )}
+            {message && <p className="text-sm text-gray-500">{message}</p>}
           </div>
         </Modal>
       )}
@@ -112,34 +112,42 @@ export default function Profile() {
           onClose={() => setShowChangePasswordModal(false)}
         >
           <div className="flex flex-col gap-4">
-            <PasswordInput
-              label="Senha antiga"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              showPassword={showPassword}
-              toggleShowPassword={() => setShowPassword(!showPassword)}
-            />
-            <PasswordInput
-              label="Nova senha"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              showPassword={showPassword}
-              toggleShowPassword={() => setShowPassword(!showPassword)}
-            />
-            <PasswordInput
-              label="Confirmar senha"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              showPassword={showPassword}
-              toggleShowPassword={() => setShowPassword(!showPassword)}
-            />
-            <button
-              className="bg-blue-500 px-4 py-2 rounded-md text-white font-bold hover:bg-blue-600"
-              onClick={handleChangePassword}
-              disabled={isGoogleUser}
-            >
-              Confirmar
-            </button>
+            {isGoogleUser ? (
+              <p className="text-red-500">
+                Usuários autenticados pelo Google não podem alterar a senha.
+              </p>
+            ) : (
+              <>
+                <PasswordInput
+                  label="Senha antiga"
+                  value={oldPassword}
+                  onChange={(e) => setOldPassword(e.target.value)}
+                  showPassword={showPassword}
+                  toggleShowPassword={() => setShowPassword(!showPassword)}
+                />
+                <PasswordInput
+                  label="Nova senha"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  showPassword={showPassword}
+                  toggleShowPassword={() => setShowPassword(!showPassword)}
+                />
+                <PasswordInput
+                  label="Confirmar senha"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  showPassword={showPassword}
+                  toggleShowPassword={() => setShowPassword(!showPassword)}
+                />
+                <button
+                  className="bg-blue-500 px-4 py-2 rounded-md text-white font-bold hover:bg-blue-600"
+                  onClick={handleChangePassword}
+                  disabled={!oldPassword || !newPassword || !confirmPassword}
+                >
+                  Confirmar
+                </button>
+              </>
+            )}
             {message && <p className="text-sm text-black">{message}</p>}
           </div>
         </Modal>
