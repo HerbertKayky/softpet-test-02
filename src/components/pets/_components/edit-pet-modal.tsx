@@ -10,6 +10,7 @@ import { IoMdClose } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { toast } from "react-hot-toast";
 
 const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
   isOpen,
@@ -31,7 +32,6 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
 
   useEffect(() => {
     if (petData) {
-      // Formata a data para "yyyy-MM-dd"
       const formattedDate = petData.birth
         ? new Date(petData.birth).toISOString().split("T")[0]
         : "";
@@ -53,6 +53,7 @@ const EditPetModal: React.FC<PetModalProps & { petData: PetProps | null }> = ({
     try {
       await api.put(`/api/pet/${data.id}`, data);
       onSuccess();
+      toast.success("Pet editado com sucesso!");
       reset();
       onClose();
     } catch (error) {

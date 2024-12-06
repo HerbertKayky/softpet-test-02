@@ -10,6 +10,7 @@ import { MdOutlinePets } from "react-icons/md";
 import { FaPhoneVolume, FaRegUserCircle } from "react-icons/fa";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
+import { toast } from "react-hot-toast";
 
 const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
   const { data: session } = useSession();
@@ -25,7 +26,8 @@ const PetModal: React.FC<PetModalProps> = ({ isOpen, onClose, onSuccess }) => {
     setIsSubmitting(true);
     try {
       await api.post("/api/pet", data);
-      onSuccess(); // Atualiza a lista de pets após o cadastro
+      onSuccess();
+      toast.success("Pet criado com sucesso!");
       reset();
       onClose();
     } catch (error) {

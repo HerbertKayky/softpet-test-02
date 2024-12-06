@@ -8,6 +8,7 @@ import { FaPhoneVolume, FaRegTrashAlt, FaRegUserCircle } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { useState } from "react";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { toast } from "react-hot-toast";
 
 const DeletePetModal: React.FC<
   PetModalProps & { petData: PetProps | null }
@@ -21,6 +22,7 @@ const DeletePetModal: React.FC<
     try {
       await api.delete(`/api/pet/${petData.id}`);
       onSuccess();
+      toast.success("Pet deletado com sucesso!");
       onClose();
     } catch (error) {
       console.error("Erro ao remover pet:", error);
@@ -34,11 +36,11 @@ const DeletePetModal: React.FC<
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-gray-900/80 z-20 p-4"
-      onClick={onClose} 
+      onClick={onClose}
     >
       <div
         className="bg-gradient-dark-blue shadow-xl w-full max-w-xl p-6 sm:p-10 rounded-lg border-2 border-blue-500"
-        onClick={(e) => e.stopPropagation()} 
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-8 text-white">
           <div className="flex items-center gap-4">

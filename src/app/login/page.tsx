@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { toast, Toaster } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 type LoginFormInputs = {
   email: string;
@@ -54,7 +54,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-[calc(100vh-125px)] items-center justify-center px-4 sm:px-6 lg:px-8">
-      <Toaster position="top-center" reverseOrder={false} />
       <div className="w-full max-w-sm sm:max-w-md bg-white p-6 sm:p-8 rounded-lg shadow-lg">
         <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center">
           Login
