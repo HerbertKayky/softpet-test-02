@@ -9,6 +9,7 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import Link from "next/link";
 import { useState } from "react";
+import { toast, Toaster } from "react-hot-toast";
 
 export function Header() {
   const { data: session } = useSession();
@@ -18,6 +19,7 @@ export function Header() {
   return (
     <Container>
       <header className="flex flex-wrap items-center justify-between py-5 sm:py-10">
+        <Toaster position="top-center" reverseOrder={false} />
         <div className="flex items-center gap-4">
           <Link
             href="/"
@@ -89,6 +91,7 @@ export function Header() {
                     </Link>
                     <button
                       onClick={() => {
+                        toast.success("Você saiu da sua conta");
                         signOut();
                         setIsMenuOpen(false);
                       }}
