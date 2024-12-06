@@ -20,6 +20,8 @@ export default function Profile() {
   const [newEmail, setNewEmail] = useState("");
   const [message, setMessage] = useState("");
 
+  const isGoogleUser = session?.user.provider === "google";
+
   const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
       setMessage("As senhas não coincidem!");
@@ -69,6 +71,13 @@ export default function Profile() {
         onChangeEmail={() => setShowChangeEmailModal(true)}
         onChangePassword={() => setShowChangePasswordModal(true)}
       />
+
+      {isGoogleUser && (
+        <p className="text-center text-red-500 font-medium my-4">
+          Usuários autenticados pelo Google não podem alterar e-mail ou senha.
+        </p>
+      )}
+
       <Footer />
 
       {showChangeEmailModal && (
@@ -83,10 +92,12 @@ export default function Profile() {
               className="p-2 rounded-md outline-none border border-gray-300"
               value={newEmail}
               onChange={(e) => setNewEmail(e.target.value)}
+              disabled={isGoogleUser}
             />
             <button
               className="bg-blue-500 px-4 py-2 rounded-md text-white font-bold hover:bg-blue-600"
               onClick={handleChangeEmail}
+              disabled={isGoogleUser}
             >
               Confirmar
             </button>
@@ -125,6 +136,7 @@ export default function Profile() {
             <button
               className="bg-blue-500 px-4 py-2 rounded-md text-white font-bold hover:bg-blue-600"
               onClick={handleChangePassword}
+              disabled={isGoogleUser}
             >
               Confirmar
             </button>

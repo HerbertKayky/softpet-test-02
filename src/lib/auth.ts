@@ -43,12 +43,16 @@ export const authOptions: NextAuthOptions = {
   pages: { signIn: "/auth/signin" },
   session: { strategy: "jwt" },
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) token.id = user.id.toString();
+    async jwt({ token, user, account }) {
+      if (user) {
+        token.id = user.id.toString();
+        token.provider = account?.provider || "credentials";
+      }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id as string;
+      session.user.provider = token.provider as string;
       return session;
     },
   },
