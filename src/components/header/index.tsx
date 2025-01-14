@@ -5,8 +5,9 @@ import Container from "../container";
 import { FaRegUser } from "react-icons/fa";
 import { signOut, useSession } from "next-auth/react";
 import { FiLogOut } from "react-icons/fi";
-import { IoMdNotificationsOutline } from "react-icons/io";
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import { LuMessageCircle } from "react-icons/lu";
+
 import Link from "next/link";
 import { useState } from "react";
 
@@ -44,7 +45,7 @@ export function Header() {
 
           <div className="flex">
             <button onClick={() => setIsModalOpen(true)}>
-              <IoMdNotificationsOutline size={30} color="#FFF" />
+              <LuMessageCircle size={30} color="#FFF" />
             </button>
           </div>
         </div>
