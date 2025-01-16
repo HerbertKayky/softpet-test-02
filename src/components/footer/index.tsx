@@ -36,14 +36,14 @@ const Footer = () => {
           <p className="text-sm">
             Desenvolvido por <strong>Herbert Kayky</strong>
           </p>
-          <div className="flex gap-3">
+          <div className="flex gap-3 ">
             <Link
               href="https://github.com/herbertkayky"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline"
             >
-              <FaGithub className="w-6 h-6" />
+              <FaGithub className="w-6 h-6 hover:scale-125 transition-all" />
             </Link>
             <Link
               href="https://www.linkedin.com/in/herbert-kayky-783705141/"
@@ -51,7 +51,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="hover:underline"
             >
-              <FaLinkedin className="w-6 h-6" />
+              <FaLinkedin className="w-6 h-6 hover:scale-125 transition-all" />
             </Link>
           </div>
 
@@ -61,7 +61,7 @@ const Footer = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaInstagram className="w-6 h-6" />
+              <FaInstagram className="w-6 h-6 hover:scale-125 transition-all" />
             </Link>
           </div>
         </div>
